@@ -1,5 +1,6 @@
+import { Head, Html, Main, NextScript } from "next/document";
+
 import { getCssText } from "../styles/stitches.config";
-import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
@@ -16,6 +17,8 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap"
           rel="stylesheet"
         />
+
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
         <style
           id="stitches"
