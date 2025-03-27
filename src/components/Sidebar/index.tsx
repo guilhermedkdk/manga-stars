@@ -36,21 +36,21 @@ export default function Sidebar() {
       />
 
       <TopContainer>
-        <Link href={"/"}>
+        <Link href={"/home"}>
           <Image src={logoImg} alt="" width={136} height={32} />
         </Link>
 
         <NavigationWrapper>
-          <NavButton href="/" active={currentRoute === "/home"}>
+          <NavButton href="/home" active={currentRoute === "/home"}>
             <ChartLineUp size={24} /> Início
           </NavButton>
 
-          <NavButton href="/" active={currentRoute === "/explore"}>
+          <NavButton href="/explore" active={currentRoute === "/explore"}>
             <Binoculars size={24} /> Explorar
           </NavButton>
 
           {session === "authenticated" && (
-            <NavButton href={"/"}>
+            <NavButton href="/profile" active={currentRoute === "/profile"}>
               <User size={24} />
               Perfil
             </NavButton>
