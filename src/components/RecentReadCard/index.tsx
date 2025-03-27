@@ -1,9 +1,9 @@
 import Image from "next/image";
-import { Star } from "phosphor-react";
 
 import bookImg from "@/../public/mangas/onepiece-cover.jpg";
 
-import { CardHeader, CardInfos, Container, Infos, Rating } from "./styles";
+import { StarsRating } from "../StarsRating";
+import { CardHeader, CardInfos, Container, Infos } from "./styles";
 
 export default function RecentReadCard() {
   return (
@@ -21,13 +21,7 @@ export default function RecentReadCard() {
           <Infos>
             <span>Há 2 dias</span>
           </Infos>
-          <Rating>
-            <Star size={16} weight="fill" />
-            <Star size={16} weight="fill" />
-            <Star size={16} weight="fill" />
-            <Star size={16} weight="fill" />
-            <Star size={16} />
-          </Rating>
+          <StarsRating rating={1.5} />
         </CardHeader>
 
         <Infos>

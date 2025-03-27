@@ -71,19 +71,8 @@ export const Infos = styled("div", {
   },
 });
 
-export const Rating = styled("div", {
-  display: "flex",
-
-  gap: "$1",
-
-  svg: {
-    color: "$purple100",
-  },
-});
-
 export const InfosWrapper = styled("div", {
   display: "flex",
-  justifyContent: "space-between",
 
   height: "100%",
   gap: "$5",

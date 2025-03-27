@@ -1,15 +1,9 @@
 import Image from "next/image";
-import { Star } from "phosphor-react";
 
 import bookImg from "@/../public/mangas/hunterxhunter-cover.jpg";
 
-import {
-  Container,
-  Infos,
-  InfosWrapper,
-  Rating,
-  ReadNotification,
-} from "./styles";
+import { StarsRating } from "../StarsRating";
+import { Container, Infos, InfosWrapper, ReadNotification } from "./styles";
 
 interface CardSizeProps {
   size?: "sm" | "lg";
@@ -49,13 +43,7 @@ export default function PopularCard({ size, isFinished }: CardSizeProps) {
           <span>Yoshihiro Togashi</span>
         </Infos>
 
-        <Rating>
-          <Star size={16} weight="fill" />
-          <Star size={16} weight="fill" />
-          <Star size={16} weight="fill" />
-          <Star size={16} weight="fill" />
-          <Star size={16} />
-        </Rating>
+        <StarsRating rating={2} />
       </InfosWrapper>
     </Container>
   );

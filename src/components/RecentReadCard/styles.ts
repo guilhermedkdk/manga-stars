@@ -59,13 +59,3 @@ export const Infos = styled("div", {
     color: "$gray300",
   },
 });
-
-export const Rating = styled("div", {
-  display: "flex",
-
-  gap: "$1",
-
-  svg: {
-    color: "$purple100",
-  },
-});

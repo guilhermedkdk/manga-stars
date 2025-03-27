@@ -1,15 +1,14 @@
 import Image from "next/image";
-import { Star } from "phosphor-react";
 
 import bookImg from "@/../public/mangas/bleach-cover.jpg";
 import userImg from "@/../public/user.svg";
 
+import { StarsRating } from "../StarsRating";
 import {
   CardHeader,
   Container,
   Infos,
   InfosWrapper,
-  Rating,
   UserImageWrapper,
 } from "./styles";
 
@@ -26,13 +25,7 @@ export default function ReviewCard() {
           <span>Hoje</span>
         </Infos>
 
-        <Rating>
-          <Star size={16} weight="fill" />
-          <Star size={16} weight="fill" />
-          <Star size={16} weight="fill" />
-          <Star size={16} weight="fill" />
-          <Star size={16} />
-        </Rating>
+        <StarsRating />
       </CardHeader>
 
       <InfosWrapper>
