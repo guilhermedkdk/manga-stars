@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { RocketLaunch } from "phosphor-react";
 
-import github from "@/../public/github.svg";
-import google from "@/../public/google.svg";
-import loginBackgroundImg from "@/../public/login-background.svg";
-import logoImg from "@/../public/logo.svg";
+import github from "@/../public/svgs/github.svg";
+import google from "@/../public/svgs/google.svg";
+import loginBackgroundImg from "@/../public/svgs/login-background.svg";
+import logoImg from "@/../public/svgs/logo.svg";
 
 import {
   Button,

@@ -1,4 +1,4 @@
-import { ChartLineUp, MagnifyingGlass } from "phosphor-react";
+import { Binoculars, MagnifyingGlass } from "phosphor-react";
 import React, { useState } from "react";
 
 import { ButtonFilter } from "@/components/FilterButton";
@@ -21,33 +21,45 @@ export default function Explore() {
     todos: {
       label: "Todos",
     },
-    computacao: {
+    acao: {
       label: "Ação",
     },
-    educacao: {
+    comedia: {
       label: "Comédia",
     },
-    fantasia: {
-      label: "Esporte",
+    suspense: {
+      label: "Suspense",
     },
-    ficcao: {
-      label: "Mistério",
+    drama: {
+      label: "Drama",
     },
-    horror: {
+    aventura: {
+      label: "Aventura",
+    },
+    romance: {
       label: "Romance",
     },
-    hqs: {
+    isekai: {
+      label: "Isekai",
+    },
+    sobrenatural: {
+      label: "Sobrenatural",
+    },
+    mecha: {
       label: "Mecha",
     },
-    suspense: {
-      label: "Sobrenatural",
+    esporte: {
+      label: "Esporte",
+    },
+    sliceOfLife: {
+      label: "Slice of Life",
     },
   };
 
   return (
     <Template>
       <Title>
-        <ChartLineUp size={32} />
+        <Binoculars size={32} />
         <h2>Explorar</h2>
         <SearchInput placeholder="Buscar livro ou autor">
           <MagnifyingGlass size={20} />

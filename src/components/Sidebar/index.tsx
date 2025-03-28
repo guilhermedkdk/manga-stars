@@ -3,8 +3,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Binoculars, ChartLineUp, SignIn, SignOut, User } from "phosphor-react";
 
-import logoImg from "@/../public/logo.svg";
-import sidebarBackground from "@/../public/sidebar.svg";
+import logoImg from "@/../public/svgs/logo.svg";
+import sidebarBackground from "@/../public/svgs/sidebar.svg";
 
 import {
   ImageWrapper,

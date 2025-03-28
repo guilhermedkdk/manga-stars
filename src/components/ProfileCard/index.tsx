@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import bookImg from "../../../public/mangas/jujutsu-cover.jpg";
+import bookImg from "../../../public/images/mangas/jujutsu-cover.jpg";
 import { StarsRating } from "../StarsRating";
 import {
   CardInfos,

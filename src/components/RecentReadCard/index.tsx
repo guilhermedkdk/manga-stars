@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import bookImg from "@/../public/mangas/onepiece-cover.jpg";
+import bookImg from "@/../public/images/mangas/onepiece-cover.jpg";
 
 import { StarsRating } from "../StarsRating";
 import { CardHeader, CardInfos, Container, Infos } from "./styles";

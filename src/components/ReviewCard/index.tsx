@@ -1,7 +1,7 @@
 import Image from "next/image";
 
-import bookImg from "@/../public/mangas/bleach-cover.jpg";
-import userImg from "@/../public/user.svg";
+import bookImg from "@/../public/images/mangas/bleach-cover.jpg";
+import userImg from "@/../public/svgs/user.svg";
 
 import { StarsRating } from "../StarsRating";
 import {

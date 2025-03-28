@@ -8,7 +8,7 @@ import {
   UserList,
 } from "phosphor-react";
 
-import userImg from "@/../public/avatar-short.jpg";
+import userImg from "@/../public/images/users/guilherme.jpg";
 import ProfileCard from "@/components/ProfileCard";
 import { SearchInput } from "@/components/SearchInput";
 
@@ -73,7 +73,7 @@ export default function Profile() {
               <BookOpen size={32} />
               <div>
                 <h5>3853</h5>
-                <span>Páginas lidas </span>
+                <span>Volumes lidas </span>
               </div>
             </UserNumber>
             <UserNumber>

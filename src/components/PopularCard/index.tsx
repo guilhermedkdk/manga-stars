@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import bookImg from "@/../public/mangas/hunterxhunter-cover.jpg";
+import bookImg from "@/../public/images/mangas/hunterxhunter-cover.jpg";
 
 import { StarsRating } from "../StarsRating";
 import { Container, Infos, InfosWrapper, ReadNotification } from "./styles";
