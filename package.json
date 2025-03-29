@@ -8,11 +8,17 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "dependencies": {
+    "@prisma/client": "^6.5.0",
     "@stitches/react": "^1.2.8",
     "next": "15.2.2",
+    "phosphor-react": "^1.4.1",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -20,9 +26,12 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/uuid": "^10.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.2.2",
     "eslint-plugin-simple-import-sort": "^12.1.1",
+    "prisma": "^6.5.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }
