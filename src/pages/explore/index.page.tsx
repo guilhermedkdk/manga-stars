@@ -30,6 +30,8 @@ export default function Explore({ categories, mangas }: ExploreProps) {
   const [mangasList, setMangasList] =
     useState<MangaWithRatingAndCategories[]>(mangas);
 
+  const [search, setSearch] = useState("");
+
   const [categorySelected, setCategorySelected] = useState<string | null>(null);
 
   async function selectCategory(categoryId: string | null) {
@@ -42,12 +44,27 @@ export default function Explore({ categories, mangas }: ExploreProps) {
     setCategorySelected(categoryId);
   }
 
+  const filteredMangas = mangasList?.filter((manga) => {
+    return (
+      manga.name
+        .toLowerCase()
+        .includes(search.toLowerCase().replace(/( )+/g, " ")) ||
+      manga.author
+        .toLowerCase()
+        .includes(search.toLowerCase().replace(/( )+/g, " "))
+    );
+  });
+
   return (
     <Template>
       <Title>
         <Binoculars size={32} />
         <h2>Explorar</h2>
-        <SearchInput placeholder="Buscar livro ou autor">
+        <SearchInput
+          placeholder="Buscar mangá ou autor"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        >
           <MagnifyingGlass size={20} />
         </SearchInput>
       </Title>
@@ -72,7 +89,7 @@ export default function Explore({ categories, mangas }: ExploreProps) {
           ))}
         </FilterContainer>
         <CardsContainer>
-          {mangasList.map((manga) => (
+          {filteredMangas.map((manga) => (
             <PopularCard
               key={manga.id}
               size="lg"
