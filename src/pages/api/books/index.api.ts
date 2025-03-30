@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/libs/prisma";
 
 export default async function handler(
-  _req: NextApiRequest,
+  req: NextApiRequest,
   res: NextApiResponse
 ) {
   const mangas = await prisma.manga.findMany({
@@ -13,10 +13,22 @@ export default async function handler(
           rate: true,
         },
       },
+      categories: {
+        include: {
+          category: true,
+        },
+      },
     },
   });
 
-  const mangasWithRating = mangas.map((manga) => {
+  const mangasFixedRelationWithCategory = mangas.map((manga) => {
+    return {
+      ...manga,
+      categories: manga.categories.map((category) => category.category),
+    };
+  });
+
+  const mangasWithRating = mangasFixedRelationWithCategory.map((manga) => {
     const avgRate =
       manga.ratings.reduce((sum, rateObj) => {
         return sum + rateObj.rate;

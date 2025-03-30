@@ -2,7 +2,7 @@ import { Category, Manga } from "@prisma/client";
 import { Binoculars, MagnifyingGlass } from "phosphor-react";
 import React, { useState } from "react";
 
-import { ButtonFilter } from "@/components/FilterButton";
+import { FilterButton } from "@/components/FilterButton";
 import PopularCard from "@/components/PopularCard";
 import { SearchInput } from "@/components/SearchInput";
 import { prisma } from "@/libs/prisma";
@@ -15,17 +15,18 @@ import {
   Title,
 } from "./styles";
 
-interface MangaWithRating extends Manga {
+interface MangaWithRatingAndCategories extends Manga {
   rating: number;
+  categories: Category[];
 }
 
 export interface ExploreProps {
   categories: Category[];
-  mangas: MangaWithRating[];
+  mangas: MangaWithRatingAndCategories[];
 }
 
 export default function Explore({ categories, mangas }: ExploreProps) {
-  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [categorySelected, setCategorySelected] = useState<string | null>(null);
 
   return (
     <Template>
@@ -39,19 +40,21 @@ export default function Explore({ categories, mangas }: ExploreProps) {
 
       <CenterContainer>
         <FilterContainer>
-          <ButtonFilter
-            title={"Todos"}
-            selected={activeFilter === null}
-            onClick={() => setActiveFilter(null)}
-          />
+          <FilterButton
+            selected={!categorySelected}
+            onClick={() => setCategorySelected(null)}
+          >
+            Todos
+          </FilterButton>
 
           {categories.map((category) => (
-            <ButtonFilter
+            <FilterButton
               key={category.id}
-              title={category.name}
-              selected={activeFilter === category.id}
-              onClick={() => setActiveFilter(category.id)}
-            />
+              selected={categorySelected === category.id}
+              onClick={() => setCategorySelected(category.id)}
+            >
+              {category.name}
+            </FilterButton>
           ))}
         </FilterContainer>
         <CardsContainer>
@@ -79,10 +82,22 @@ export async function getStaticProps() {
           rate: true,
         },
       },
+      categories: {
+        include: {
+          category: true,
+        },
+      },
     },
   });
 
-  const mangasWithRating = mangas.map((manga) => {
+  const mangasFixedRelationWithCategory = mangas.map((manga) => {
+    return {
+      ...manga,
+      categories: manga.categories.map((category) => category.category),
+    };
+  });
+
+  const mangasWithRating = mangasFixedRelationWithCategory.map((manga) => {
     const avgRate =
       manga.ratings.reduce((sum, rateObj) => {
         return sum + rateObj.rate;
