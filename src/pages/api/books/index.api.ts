@@ -6,7 +6,25 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  if (req.method !== "GET") {
+    return res.status(405).end();
+  }
+
+  let categoriesQuery;
+
+  if (req.query.category) {
+    const categoryId = String(req.query.category);
+    categoriesQuery = {
+      some: {
+        category_id: categoryId,
+      },
+    };
+  }
+
   const mangas = await prisma.manga.findMany({
+    where: {
+      categories: categoriesQuery,
+    },
     include: {
       ratings: {
         select: {

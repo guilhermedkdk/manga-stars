@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { FilterButton } from "@/components/FilterButton";
 import PopularCard from "@/components/PopularCard";
 import { SearchInput } from "@/components/SearchInput";
+import { api } from "@/libs/axios";
 import { prisma } from "@/libs/prisma";
 
 import Template from "../template";
@@ -26,14 +27,27 @@ export interface ExploreProps {
 }
 
 export default function Explore({ categories, mangas }: ExploreProps) {
+  const [mangasList, setMangasList] =
+    useState<MangaWithRatingAndCategories[]>(mangas);
+
   const [categorySelected, setCategorySelected] = useState<string | null>(null);
+
+  async function selectCategory(categoryId: string | null) {
+    const query = categoryId ? `?category=${categoryId}` : "";
+    const response = await api.get(`/books${query}`);
+
+    if (response.data.mangasWithRating) {
+      setMangasList(response.data.mangasWithRating);
+    }
+    setCategorySelected(categoryId);
+  }
 
   return (
     <Template>
       <Title>
         <Binoculars size={32} />
         <h2>Explorar</h2>
-        <SearchInput placeholder="Buscar mangá ou autor">
+        <SearchInput placeholder="Buscar livro ou autor">
           <MagnifyingGlass size={20} />
         </SearchInput>
       </Title>
@@ -42,7 +56,7 @@ export default function Explore({ categories, mangas }: ExploreProps) {
         <FilterContainer>
           <FilterButton
             selected={!categorySelected}
-            onClick={() => setCategorySelected(null)}
+            onClick={() => selectCategory(null)}
           >
             Todos
           </FilterButton>
@@ -51,14 +65,14 @@ export default function Explore({ categories, mangas }: ExploreProps) {
             <FilterButton
               key={category.id}
               selected={categorySelected === category.id}
-              onClick={() => setCategorySelected(category.id)}
+              onClick={() => selectCategory(category.id)}
             >
               {category.name}
             </FilterButton>
           ))}
         </FilterContainer>
         <CardsContainer>
-          {mangas.map((manga) => (
+          {mangasList.map((manga) => (
             <PopularCard
               key={manga.id}
               size="lg"
