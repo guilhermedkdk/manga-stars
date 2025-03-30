@@ -8,10 +8,10 @@ export interface SearchInputProps {
 }
 
 export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
-  ({ children, size, ...props }, ref) => {
+  ({ children, size, ...rest }, ref) => {
     return (
       <TextInputContainer size={size}>
-        <Input ref={ref} {...props} />
+        <Input ref={ref} {...rest} />
         {children}
       </TextInputContainer>
     );

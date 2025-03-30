@@ -1,9 +1,11 @@
+import { Category, Manga } from "@prisma/client";
 import { Binoculars, MagnifyingGlass } from "phosphor-react";
 import React, { useState } from "react";
 
 import { ButtonFilter } from "@/components/FilterButton";
 import PopularCard from "@/components/PopularCard";
 import { SearchInput } from "@/components/SearchInput";
+import { prisma } from "@/libs/prisma";
 
 import Template from "../template";
 import {
@@ -13,104 +15,66 @@ import {
   Title,
 } from "./styles";
 
-export default function Explore() {
-  const [activeFilter, setActiveFilter] = useState("Todos");
+export interface ExploreProps {
+  categories: Category[];
+  mangas: Manga[];
+}
 
-  // Fazer a busca de categorias no banco de dados
-  const categorySelectorTypes = {
-    todos: {
-      label: "Todos",
-    },
-    acao: {
-      label: "Ação",
-    },
-    comedia: {
-      label: "Comédia",
-    },
-    suspense: {
-      label: "Suspense",
-    },
-    drama: {
-      label: "Drama",
-    },
-    aventura: {
-      label: "Aventura",
-    },
-    romance: {
-      label: "Romance",
-    },
-    isekai: {
-      label: "Isekai",
-    },
-    sobrenatural: {
-      label: "Sobrenatural",
-    },
-    mecha: {
-      label: "Mecha",
-    },
-    esporte: {
-      label: "Esporte",
-    },
-    sliceOfLife: {
-      label: "Slice of Life",
-    },
-  };
+export default function Explore({ categories, mangas }: ExploreProps) {
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
   return (
     <Template>
       <Title>
         <Binoculars size={32} />
         <h2>Explorar</h2>
-        <SearchInput placeholder="Buscar livro ou autor">
+        <SearchInput placeholder="Buscar mangá ou autor">
           <MagnifyingGlass size={20} />
         </SearchInput>
       </Title>
 
       <CenterContainer>
         <FilterContainer>
-          {Object.entries(categorySelectorTypes).map(([key, { label }]) => (
+          <ButtonFilter
+            title={"Todos"}
+            selected={activeFilter === null}
+            onClick={() => setActiveFilter(null)}
+          />
+
+          {categories.map((category) => (
             <ButtonFilter
-              key={label}
-              id={key}
-              title={label}
-              value={key}
-              selected={activeFilter === label}
-              onClick={(e: React.MouseEvent) => {
-                const el = e.target as HTMLElement;
-                if (el.textContent?.toLowerCase() !== activeFilter) {
-                  setActiveFilter(label);
-                } else {
-                  setActiveFilter("");
-                }
-              }}
+              key={category.id}
+              title={category.name}
+              selected={activeFilter === category.id}
+              onClick={() => setActiveFilter(category.id)}
             />
           ))}
         </FilterContainer>
         <CardsContainer>
-          <PopularCard isFinished />
-          <PopularCard />
-          <PopularCard isFinished />
-          <PopularCard />
-          <PopularCard isFinished />
-          <PopularCard />
-          <PopularCard isFinished />
-          <PopularCard isFinished />
-          <PopularCard />
-          <PopularCard />
-          <PopularCard />
-          <PopularCard />
-          <PopularCard />
-          <PopularCard />
-          <PopularCard />
-          <PopularCard />
-          <PopularCard />
-          <PopularCard />
-          <PopularCard />
-          <PopularCard />
-          <PopularCard />
-          <PopularCard />
+          {mangas.map((manga) => (
+            <PopularCard
+              key={manga.id}
+              size="lg"
+              author={manga.author}
+              name={manga.name}
+              cover={manga.cover_url}
+              rating={4}
+            />
+          ))}
         </CardsContainer>
       </CenterContainer>
     </Template>
   );
+}
+export async function getStaticProps() {
+  const categories = await prisma.category.findMany();
+  const mangas = await prisma.manga.findMany();
+
+  return {
+    props: {
+      categories: JSON.parse(JSON.stringify(categories)),
+      mangas: JSON.parse(JSON.stringify(mangas)),
+    },
+    revalidate: 60 * 60 * 24 * 1, // 1 day
+  };
 }

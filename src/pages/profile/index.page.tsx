@@ -38,7 +38,7 @@ export default function Profile() {
 
       <MainContainer>
         <CenterContainer>
-          <SearchInput placeholder="Buscar livro ou autor" size={"md"}>
+          <SearchInput placeholder="Buscar mangá ou autor" size="md">
             <MagnifyingGlass size={20} />
           </SearchInput>
 

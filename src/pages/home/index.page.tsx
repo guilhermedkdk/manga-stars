@@ -49,7 +49,7 @@ export default function Home() {
 
         <RightContainer>
           <Subtitle>
-            <span>Livros Populares</span>
+            <span>Mangás Populares</span>
             <Link href={"/"}>
               Ver todos
               <CaretRight size={16} />

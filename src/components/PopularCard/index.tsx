@@ -1,23 +1,33 @@
 import Image from "next/image";
 
-import bookImg from "@/../public/images/mangas/hunterxhunter-cover.jpg";
-
 import { StarsRating } from "../StarsRating";
 import { Container, Infos, InfosWrapper, ReadNotification } from "./styles";
 
 interface CardSizeProps {
   size?: "sm" | "lg";
   isFinished?: boolean;
+  cover: string;
+  name: string;
+  author: string;
+  rating: number;
 }
 
-export default function PopularCard({ size, isFinished }: CardSizeProps) {
+export default function PopularCard({
+  size = "sm",
+  isFinished,
+  cover,
+  name,
+  author,
+  rating,
+  ...rest
+}: CardSizeProps) {
   return (
-    <Container>
+    <Container {...rest}>
       {size === "sm" ? (
         <Image
           width={64}
           height={94}
-          src={bookImg}
+          src={`/${cover}`}
           alt=""
           style={{ borderRadius: "4px" }}
         />
@@ -25,7 +35,7 @@ export default function PopularCard({ size, isFinished }: CardSizeProps) {
         <Image
           width={108}
           height={152}
-          src={bookImg}
+          src={`/${cover}`}
           alt=""
           style={{ borderRadius: "4px" }}
         />
@@ -39,11 +49,11 @@ export default function PopularCard({ size, isFinished }: CardSizeProps) {
         )}
 
         <Infos>
-          <strong>Hunter X Hunter</strong>
-          <span>Yoshihiro Togashi</span>
+          <strong>{name}</strong>
+          <span>{author}</span>
         </Infos>
 
-        <StarsRating rating={2} />
+        <StarsRating rating={rating} />
       </InfosWrapper>
     </Container>
   );
