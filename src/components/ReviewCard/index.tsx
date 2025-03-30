@@ -1,7 +1,8 @@
+import { Manga, Rating, User as UserPrisma } from "@prisma/client";
 import Image from "next/image";
 
-import bookImg from "@/../public/images/mangas/bleach-cover.jpg";
 import userImg from "@/../public/svgs/user.svg";
+import { getDateFormattedAndRelative } from "@/utils/timeFormatter";
 
 import { StarsRating } from "../StarsRating";
 import {
@@ -12,7 +13,16 @@ import {
   UserImageWrapper,
 } from "./styles";
 
-export default function ReviewCard() {
+export interface CardProps {
+  user?: UserPrisma;
+  manga: Manga;
+  rating: Rating;
+}
+
+export default function ReviewCard({ user, manga, rating }: CardProps) {
+  const { dateFormatted, dateRelativeToNow, dateString } =
+    getDateFormattedAndRelative(rating.created_at);
+
   return (
     <Container>
       <CardHeader>
@@ -21,30 +31,27 @@ export default function ReviewCard() {
         </UserImageWrapper>
 
         <Infos>
-          <>Jaxson Dias</>
-          <span>Hoje</span>
+          <strong>{user?.name}</strong>
+          <time title={dateFormatted} dateTime={dateString}>
+            {dateRelativeToNow}
+          </time>
         </Infos>
 
-        <StarsRating />
+        <StarsRating rating={rating.rate} />
       </CardHeader>
 
       <InfosWrapper>
         <Image
           width={108}
           height={152}
-          src={bookImg}
+          src={`/${manga.cover_url}`}
           alt=""
           style={{ borderRadius: "4px" }}
         />
         <Infos>
-          <strong>Bleach</strong>
-          <span>Tite Kubo</span>
-          <p>
-            Semper et sapien proin vitae nisi. Feugiat neque integer donec et
-            aenean posuere amet ultrices. Cras fermentum id pulvinar varius leo
-            a in. Amet libero pharetra nunc elementum fringilla velit ipsum. Sed
-            vulputate massa velit nibh...
-          </p>
+          <strong>{manga.name}</strong>
+          <span>{manga.author}</span>
+          <p>{rating.description}</p>
         </Infos>
       </InfosWrapper>
     </Container>

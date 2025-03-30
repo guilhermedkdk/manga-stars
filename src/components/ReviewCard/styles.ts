@@ -52,7 +52,7 @@ export const Infos = styled("div", {
 
   height: "100%",
 
-  span: {
+  time: {
     fontSize: "$sm",
     lineHeight: "$base",
     color: "$gray400",

@@ -1,9 +1,11 @@
+import { Category, Manga, Rating, User } from "@prisma/client";
 import Link from "next/link";
 import { CaretRight, ChartLineUp } from "phosphor-react";
 
 import PopularCard from "@/components/PopularCard";
 import RecentReadCard from "@/components/RecentReadCard";
 import ReviewCard from "@/components/ReviewCard";
+import { prisma } from "@/libs/prisma";
 
 import Template from "../template";
 import {
@@ -14,7 +16,22 @@ import {
   Title,
 } from "./styles";
 
-export default function Home() {
+interface MangaWithRatingAndCategories extends Manga {
+  rating: number;
+  categories: Category[];
+}
+
+export interface RatingWithUserAndManga extends Rating {
+  user: User;
+  manga: Manga;
+}
+
+interface HomeProps {
+  ratings: RatingWithUserAndManga[];
+  mangas: MangaWithRatingAndCategories[];
+}
+
+export default function Home({ ratings, mangas }: HomeProps) {
   const session = "authenticated";
 
   return (
@@ -42,9 +59,15 @@ export default function Home() {
           <Subtitle>
             <span>Avaliações mais recentes</span>
           </Subtitle>
-          <ReviewCard />
-          <ReviewCard />
-          <ReviewCard />
+
+          {ratings.map((rating) => (
+            <ReviewCard
+              key={rating.id}
+              user={rating.user}
+              manga={rating.manga}
+              rating={rating}
+            />
+          ))}
         </CenterContainer>
 
         <RightContainer>
@@ -55,12 +78,81 @@ export default function Home() {
               <CaretRight size={16} />
             </Link>
           </Subtitle>
-          <PopularCard size="sm" />
-          <PopularCard size="sm" isFinished />
-          <PopularCard size="sm" />
-          <PopularCard size="sm" />
+
+          {mangas.map((manga) => (
+            <PopularCard
+              key={manga.id}
+              size="sm"
+              author={manga.author}
+              name={manga.name}
+              cover={manga.cover_url}
+              rating={manga.rating}
+            />
+          ))}
         </RightContainer>
       </HomeContainer>
     </Template>
   );
+}
+
+export async function getStaticProps() {
+  const mangas = await prisma.manga.findMany({
+    include: {
+      ratings: {
+        select: {
+          rate: true,
+        },
+      },
+      categories: {
+        include: {
+          category: true,
+        },
+      },
+    },
+
+    take: 4,
+    orderBy: {
+      ratings: {
+        _count: "desc",
+      },
+    },
+  });
+
+  const mangasFixedRelationWithCategory = mangas.map((manga) => {
+    return {
+      ...manga,
+      categories: manga.categories.map((category) => category.category),
+    };
+  });
+
+  const mangasWithRating = mangasFixedRelationWithCategory.map((manga) => {
+    const avgRate =
+      manga.ratings.reduce((sum, rateObj) => {
+        return sum + rateObj.rate;
+      }, 0) / manga.ratings.length;
+
+    return {
+      ...manga,
+      rating: avgRate,
+    };
+  });
+
+  const ratings = await prisma.rating.findMany({
+    include: {
+      user: true,
+      manga: true,
+    },
+    take: 3,
+    orderBy: {
+      created_at: "desc",
+    },
+  });
+
+  return {
+    props: {
+      mangas: JSON.parse(JSON.stringify(mangasWithRating)),
+      ratings: JSON.parse(JSON.stringify(ratings)),
+    },
+    revalidate: 60 * 60 * 24 * 1, // 1 day
+  };
 }
