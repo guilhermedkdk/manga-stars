@@ -3,6 +3,7 @@ import { Binoculars, MagnifyingGlass } from "phosphor-react";
 import React, { useState } from "react";
 
 import { FilterButton } from "@/components/FilterButton";
+import { LateralMenu } from "@/components/LateralMenu";
 import PopularCard from "@/components/PopularCard";
 import { SearchInput } from "@/components/SearchInput";
 import { api } from "@/libs/axios";
@@ -44,6 +45,14 @@ export default function Explore({ categories, mangas }: ExploreProps) {
     setCategorySelected(categoryId);
   }
 
+  const [selectedManga, setSelectedManga] = useState(false);
+
+  const sidebarShouldBeOpen = !!selectedManga;
+
+  function deselectManga() {
+    setSelectedManga(false);
+  }
+
   const filteredMangas = mangasList?.filter((manga) => {
     return (
       manga.name
@@ -57,6 +66,8 @@ export default function Explore({ categories, mangas }: ExploreProps) {
 
   return (
     <Template>
+      {sidebarShouldBeOpen && <LateralMenu handleCloseMenu={deselectManga} />}
+
       <Title>
         <Binoculars size={32} />
         <h2>Explorar</h2>
@@ -97,6 +108,7 @@ export default function Explore({ categories, mangas }: ExploreProps) {
               name={manga.name}
               cover={manga.cover_url}
               rating={manga.rating}
+              onClick={() => setSelectedManga(true)}
             />
           ))}
         </CardsContainer>
