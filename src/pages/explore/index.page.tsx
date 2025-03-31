@@ -17,9 +17,10 @@ import {
   Title,
 } from "./styles";
 
-interface MangaWithRatingAndCategories extends Manga {
+export interface MangaWithRatingAndCategories extends Manga {
   rating: number;
   categories: Category[];
+  ratings: any[];
 }
 
 export interface ExploreProps {
@@ -45,14 +46,6 @@ export default function Explore({ categories, mangas }: ExploreProps) {
     setCategorySelected(categoryId);
   }
 
-  const [selectedManga, setSelectedManga] = useState(false);
-
-  const sidebarShouldBeOpen = !!selectedManga;
-
-  function deselectManga() {
-    setSelectedManga(false);
-  }
-
   const filteredMangas = mangasList?.filter((manga) => {
     return (
       manga.name
@@ -64,9 +57,24 @@ export default function Explore({ categories, mangas }: ExploreProps) {
     );
   });
 
+  const [selectedManga, setSelectedManga] =
+    useState<MangaWithRatingAndCategories | null>(null);
+
+  const sidebarShouldBeOpen = !!selectedManga;
+
+  function selectManga(manga: MangaWithRatingAndCategories) {
+    setSelectedManga(manga);
+  }
+
+  function deselectManga() {
+    setSelectedManga(null);
+  }
+
   return (
     <Template>
-      {sidebarShouldBeOpen && <LateralMenu handleCloseMenu={deselectManga} />}
+      {sidebarShouldBeOpen && (
+        <LateralMenu handleCloseMenu={deselectManga} manga={selectedManga} />
+      )}
 
       <Title>
         <Binoculars size={32} />
@@ -108,7 +116,7 @@ export default function Explore({ categories, mangas }: ExploreProps) {
               name={manga.name}
               cover={manga.cover_url}
               rating={manga.rating}
-              onClick={() => setSelectedManga(true)}
+              onClick={() => selectManga(manga)}
             />
           ))}
         </CardsContainer>

@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { BookmarkSimple, BookOpen } from "phosphor-react";
 
-import mangaImg from "@/../public/images/mangas/bleach-cover.jpg";
 import { StarsRating } from "@/components/StarsRating";
+import { MangaWithRatingAndCategories } from "@/pages/explore/index.page";
 
 import {
   Container,
@@ -13,19 +13,33 @@ import {
   Number,
 } from "./styles";
 
-export function MangaCard() {
+interface MangaCardProps {
+  manga: MangaWithRatingAndCategories;
+}
+
+export function MangaCard({ manga }: MangaCardProps) {
+  let numberOfReviews: string;
+
+  if (manga.ratings.length === 1) {
+    numberOfReviews = "avaliação";
+  } else {
+    numberOfReviews = "avaliações";
+  }
+
   return (
     <Container>
       <MangaContainer>
-        <Image src={mangaImg} alt="" width="171" height="242" />
+        <Image src={`/${manga.cover_url}`} alt="" width="171" height="242" />
         <Info>
           <div>
-            <h3>Bleach</h3>
-            <h4>Tite Kubo</h4>
+            <h3>{manga.name}</h3>
+            <h4>{manga.author}</h4>
           </div>
           <div>
-            <StarsRating />
-            <Number>5 avaliações</Number>
+            <StarsRating rating={manga.rating} />
+            <Number>
+              {manga.ratings.length} {numberOfReviews}
+            </Number>
           </div>
         </Info>
       </MangaContainer>
@@ -34,14 +48,18 @@ export function MangaCard() {
           <BookmarkSimple size={32} />
           <div>
             <h5>Categoria</h5>
-            <span>Ação, Sobrenatural</span>
+            {manga.categories.map((category, index) => (
+              <span key={category.id}>
+                {(index ? ", " : "") + category.name}
+              </span>
+            ))}
           </div>
         </MangaNumber>
         <MangaNumber>
           <BookOpen size={32} />
           <div>
             <h5>Volumes</h5>
-            <span>74</span>
+            <span>{manga.total_volumes}</span>
           </div>
         </MangaNumber>
       </Footer>
