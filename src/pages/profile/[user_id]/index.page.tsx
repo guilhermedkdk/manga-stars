@@ -15,6 +15,7 @@ import {
   User,
   UserList,
 } from "phosphor-react";
+import { useState } from "react";
 
 import ProfileCard from "@/components/ProfileCard";
 import { SearchInput } from "@/components/SearchInput";
@@ -66,6 +67,19 @@ export default function Profile({ infos, ratings, user }: ProfileProps) {
   const { dateFormatted, dateRelativeToNow, dateString } =
     getDateFormattedAndRelative(user.created_at);
 
+  const [search, setSearch] = useState("");
+
+  const filteredMangas = ratings?.filter((rating) => {
+    return (
+      rating.manga.name
+        .toLowerCase()
+        .includes(search.toLowerCase().replace(/( )+/g, " ")) ||
+      rating.manga.author
+        .toLowerCase()
+        .includes(search.toLowerCase().replace(/( )+/g, " "))
+    );
+  });
+
   return (
     <Template>
       <Title>
@@ -75,13 +89,18 @@ export default function Profile({ infos, ratings, user }: ProfileProps) {
 
       <MainContainer>
         <CenterContainer>
-          <SearchInput placeholder="Buscar mangá ou autor" size="md">
+          <SearchInput
+            placeholder="Buscar mangá ou autor"
+            size="md"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          >
             <MagnifyingGlass size={20} />
           </SearchInput>
 
           <CardsContainer>
             <CardWrapper>
-              {ratings.map((rating) => (
+              {filteredMangas.map((rating) => (
                 <ProfileCard
                   key={rating.id}
                   manga={rating.manga}

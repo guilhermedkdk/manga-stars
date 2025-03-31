@@ -36,7 +36,7 @@ export default function Explore({ categories, mangas }: ExploreProps) {
 
   async function selectCategory(categoryId: string | null) {
     const query = categoryId ? `?category=${categoryId}` : "";
-    const response = await api.get(`/books${query}`);
+    const response = await api.get(`/mangas${query}`);
 
     if (response.data.mangasWithRating) {
       setMangasList(response.data.mangasWithRating);
