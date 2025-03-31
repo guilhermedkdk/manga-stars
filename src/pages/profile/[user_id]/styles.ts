@@ -39,6 +39,7 @@ export const CenterContainer = styled("div", {
   display: "flex",
   flexDirection: "column",
 
+  width: "100%",
   maxHeight: "calc(100% - 30px)",
 });
 
@@ -62,7 +63,7 @@ export const RightContainer = styled("div", {
     lineHeight: "$short",
   },
 
-  span: {
+  time: {
     fontSize: "$sm",
     lineHeight: "$short",
     color: "$gray400",

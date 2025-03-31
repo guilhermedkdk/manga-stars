@@ -1,6 +1,8 @@
+import { Manga, Rating } from "@prisma/client";
 import Image from "next/image";
 
-import bookImg from "../../../public/images/mangas/jujutsu-cover.jpg";
+import { getDateFormattedAndRelative } from "@/utils/timeFormatter";
+
 import { StarsRating } from "../StarsRating";
 import {
   CardInfos,
@@ -12,17 +14,27 @@ import {
   ReadNotice,
 } from "./styles";
 
-export default function ProfileCard() {
+interface ProfileCardProps {
+  manga: Manga;
+  rating: Rating;
+}
+
+export default function ProfileCard({ manga, rating }: ProfileCardProps) {
+  const { dateFormatted, dateRelativeToNow, dateString } =
+    getDateFormattedAndRelative(rating.created_at);
+
   const isFinished = true;
   return (
     <Container>
-      <time>há X dias</time>
+      <time title={dateFormatted} dateTime={dateString}>
+        {dateRelativeToNow}
+      </time>
       <CardWrapper>
         <CardInfos>
           <Image
             width={108}
             height={152}
-            src={bookImg}
+            src={`/${manga.cover_url}`}
             alt=""
             style={{ borderRadius: "4px" }}
           />
@@ -35,19 +47,14 @@ export default function ProfileCard() {
             )}
 
             <Infos>
-              <strong>Jujutsu Kaisen</strong>
-              <span>Gege Akutami</span>
+              <strong>{manga.name}</strong>
+              <span>{manga.author}</span>
             </Infos>
 
-            <StarsRating rating={3} />
+            <StarsRating rating={rating.rate} />
           </InfosWrapper>
         </CardInfos>
-        <Description>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-          quos. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing
-          elit.
-        </Description>
+        <Description>{rating.description}</Description>
       </CardWrapper>
     </Container>
   );
