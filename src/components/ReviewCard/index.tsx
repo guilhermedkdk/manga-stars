@@ -1,7 +1,6 @@
 import { Manga, Rating, User as UserPrisma } from "@prisma/client";
 import Image from "next/image";
 
-import userImg from "@/../public/svgs/user.svg";
 import { getDateFormattedAndRelative } from "@/utils/timeFormatter";
 
 import { StarsRating } from "../StarsRating";
@@ -14,7 +13,7 @@ import {
 } from "./styles";
 
 export interface CardProps {
-  user?: UserPrisma;
+  user: UserPrisma;
   manga: Manga;
   rating: Rating;
 }
@@ -27,7 +26,13 @@ export default function ReviewCard({ user, manga, rating }: CardProps) {
     <Container>
       <CardHeader>
         <UserImageWrapper>
-          <Image width={40} height={40} src={userImg} alt="" />
+          <Image
+            width={40}
+            height={40}
+            src={`/${user.avatar_url}`}
+            alt=""
+            style={{ borderRadius: "50%" }}
+          />
         </UserImageWrapper>
 
         <Infos>

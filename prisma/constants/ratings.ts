@@ -11,33 +11,10 @@ export const ratings = [
   },
   {
     id: uuidv4(),
-    rate: 4.5,
-    description: "KKKKKKKKKKKKKKKKKK muito fofas, dei várias risadas!",
-    manga_id: "c5d6e7f8-9a0b-1c2d-3e4f-5a6b7c8d9e0f",
-    user_id: "c296c6c0-5c59-40dd-aa8a-ef2b015b7502",
-  },
-  {
-    id: uuidv4(),
-    rate: 5,
-    description:
-      "Muito bom... me identifiquei muito com o Light Yagami, acho que somos irmãos.",
-    manga_id: "f2a3b4c5-6d7e-8f9a-0b1c-2d3e4f5a6b7c",
-    user_id: "c296c6c0-5c59-40dd-aa8a-ef2b015b7502",
-  },
-  {
-    id: uuidv4(),
-    rate: 4,
-    description:
-      "Mano, gostei muito, mas gostaria que a Eto terminasse junta do Kaneki no final...",
-    manga_id: "e7f8a9b0-1c2d-3e4f-5a6b-7c8d9e0f1a2b",
-    user_id: "c296c6c0-5c59-40dd-aa8a-ef2b015b7502",
-  },
-  {
-    id: uuidv4(),
-    rate: 5,
-    description: "Simplesmente muito bom, uma obra que ainda inspira ",
-    manga_id: "d0e1f2a3-4b5c-6d7e-8f9a-0b1c2d3e4f5a",
-    user_id: "4383f783-6ce1-4f92-b1dd-7a7a693c4aef",
+    rate: 2,
+    description: "Mid",
+    manga_id: "a9b0c1d2-3e4f-5a6b-7c8d-9e0f1a2b3c4d",
+    user_id: "48e458c0-8b1e-4994-b85a-1e1cfcc9dd60",
   },
   {
     id: uuidv4(),
@@ -49,18 +26,18 @@ export const ratings = [
   },
   {
     id: uuidv4(),
-    rate: 5,
-    description: "One Piece é uma obra-prima, Oda é um gênio.",
-    manga_id: "0440ad7d-230e-4573-b455-84ca38b5d339",
-    user_id: "4383f783-6ce1-4f92-b1dd-7a7a693c4aef",
+    rate: 4,
+    description:
+      "Mano, gostei muito, mas gostaria que o Kaneki terminasse junto com a Eto no final...",
+    manga_id: "e7f8a9b0-1c2d-3e4f-5a6b-7c8d9e0f1a2b",
+    user_id: "c296c6c0-5c59-40dd-aa8a-ef2b015b7502",
   },
   {
     id: uuidv4(),
-    rate: 4,
-    description:
-      "Attack on Titan é uma obra que te prende do começo ao fim. O plot do final é muito bom porém acredito que poderia ter sido melhor.",
-    manga_id: "14f410df-b28a-4e72-b1b4-363e26e160dd",
-    user_id: "4383f783-6ce1-4f92-b1dd-7a7a693c4aef",
+    rate: 4.5,
+    description: "KKKKKKKKKKKKKKKKKK muito fofas, dei várias risadas!",
+    manga_id: "c5d6e7f8-9a0b-1c2d-3e4f-5a6b7c8d9e0f",
+    user_id: "c296c6c0-5c59-40dd-aa8a-ef2b015b7502",
   },
   {
     id: uuidv4(),
@@ -73,9 +50,24 @@ export const ratings = [
   {
     id: uuidv4(),
     rate: 5,
-    description: "Melhor obra do século",
+    description:
+      "Muito bom... me identifiquei muito com o Light Yagami, acho que somos irmãos.",
+    manga_id: "f2a3b4c5-6d7e-8f9a-0b1c-2d3e4f5a6b7c",
+    user_id: "c296c6c0-5c59-40dd-aa8a-ef2b015b7502",
+  },
+  {
+    id: uuidv4(),
+    rate: 5,
+    description: "Simplesmente muito bom, uma obra que ainda inspira ",
+    manga_id: "d0e1f2a3-4b5c-6d7e-8f9a-0b1c2d3e4f5a",
+    user_id: "4383f783-6ce1-4f92-b1dd-7a7a693c4aef",
+  },
+  {
+    id: uuidv4(),
+    rate: 5,
+    description: "One Piece é uma obra-prima, Oda é um gênio.",
     manga_id: "0440ad7d-230e-4573-b455-84ca38b5d339",
-    user_id: "48e458c0-8b1e-4994-b85a-1e1cfcc9dd60",
+    user_id: "4383f783-6ce1-4f92-b1dd-7a7a693c4aef",
   },
   {
     id: uuidv4(),
@@ -86,9 +78,17 @@ export const ratings = [
   },
   {
     id: uuidv4(),
-    rate: 2,
-    description: "Mid",
-    manga_id: "a9b0c1d2-3e4f-5a6b-7c8d-9e0f1a2b3c4d",
+    rate: 4,
+    description:
+      "Attack on Titan é uma obra que te prende do começo ao fim. O plot do final é muito bom porém acredito que poderia ter sido melhor.",
+    manga_id: "14f410df-b28a-4e72-b1b4-363e26e160dd",
+    user_id: "4383f783-6ce1-4f92-b1dd-7a7a693c4aef",
+  },
+  {
+    id: uuidv4(),
+    rate: 5,
+    description: "Melhor obra do século",
+    manga_id: "0440ad7d-230e-4573-b455-84ca38b5d339",
     user_id: "48e458c0-8b1e-4994-b85a-1e1cfcc9dd60",
   },
 ];
