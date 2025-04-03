@@ -1,23 +1,39 @@
+import { Rating as RatingInfo, User as UserPrisma } from "@prisma/client";
 import { X } from "phosphor-react";
+import { useEffect, useState } from "react";
 
+import { api } from "@/libs/axios";
 import { MangaWithRatingAndCategories } from "@/pages/explore/index.page";
 
 import { MangaCard } from "./MangaCard";
 import { RatingCard } from "./RatingCard";
 import { CloseButton, Container, SideMenu, Title } from "./styles";
-interface MangaReviewsSidebarProps {
-  handleCloseMenu(): void;
-}
 
 interface MangaReviewsSidebarProps {
   handleCloseMenu(): void;
   manga: MangaWithRatingAndCategories;
 }
 
+type RatingProps = RatingInfo & {
+  user: UserPrisma;
+};
+
 export function LateralMenu({
   handleCloseMenu,
   manga,
 }: MangaReviewsSidebarProps) {
+  const [ratings, setRatings] = useState<RatingProps[] | null>(null);
+
+  useEffect(() => {
+    async function loadRatings() {
+      const response = await api.get(`/mangas/${manga.id}`);
+      if (response.data) {
+        setRatings(response.data.manga.ratings);
+      }
+    }
+    loadRatings();
+  }, [manga.id]);
+
   return (
     <Container onClick={handleCloseMenu}>
       <CloseButton
@@ -33,11 +49,17 @@ export function LateralMenu({
           <span>Avaliações</span>
           <a href="">Avaliar</a>
         </Title>
-        <RatingCard />
-        <RatingCard />
-        <RatingCard />
-        <RatingCard />
-        <RatingCard />
+        {ratings?.map((rating) => (
+          <RatingCard
+            key={rating.id}
+            avatar={`/${rating.user.avatar_url}`}
+            name={rating.user.name}
+            date={rating.created_at}
+            rate={rating.rate}
+            rating={rating}
+            description={rating.description}
+          />
+        ))}
       </SideMenu>
     </Container>
   );

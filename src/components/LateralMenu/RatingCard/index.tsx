@@ -1,24 +1,51 @@
 import Image from "next/image";
 
-import avatar from "@/../public/images/users/alexandre.jpg";
 import { StarsRating } from "@/components/StarsRating";
+import { getDateFormattedAndRelative } from "@/utils/timeFormatter";
 
 import { Container, Header, User } from "./styles";
 
-export function RatingCard() {
+interface RatingCardProps {
+  avatar: string | null;
+  name: string;
+  date: Date;
+  description: string;
+  rate: number;
+}
+
+export function RatingCard({
+  avatar,
+  name,
+  date,
+  description,
+  rate,
+}: RatingCardProps) {
+  const { dateFormatted, dateRelativeToNow, dateString } =
+    getDateFormattedAndRelative(date);
+
   return (
     <Container>
       <Header>
         <User>
-          <Image src={avatar} alt="" width="40" height="40" />
+          <Image
+            src={avatar}
+            alt=""
+            width="40"
+            height="40"
+            style={{
+              objectFit: "cover",
+            }}
+          />
           <div>
-            <h5>Alexandre Morais</h5>
-            <time>Hoje</time>
+            <h5>{name}</h5>
+            <time title={dateFormatted} dateTime={dateString}>
+              {dateRelativeToNow}
+            </time>
           </div>
         </User>
-        <StarsRating rating={4.5} />
+        <StarsRating rating={rate} />
       </Header>
-      <p>Os arcos finais são os melhores</p>
+      <p>{description}</p>
     </Container>
   );
 }
