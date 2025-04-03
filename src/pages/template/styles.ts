@@ -9,8 +9,17 @@ export const Container = styled("section", {
 
     width: "100vw",
     height: "100vh",
-    padding: "$18 $24",
+    padding: "$18 $10 $18 $24",
 
     overflow: "hidden",
+
+    "@media (max-width: 768px)": {
+      overflow: "overlay",
+      padding: "$18 $2",
+    },
+
+    "@media (min-width: 1200px)": {
+      padding: "$18 $24",
+    },
   },
 });
