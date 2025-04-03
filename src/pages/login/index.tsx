@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { RocketLaunch } from "phosphor-react";
 
 import github from "@/../public/svgs/github.svg";
@@ -57,10 +58,12 @@ export default function Login() {
               Entrar com o GitHub
             </Button>
 
-            <Button>
-              <RocketLaunch size={32} weight="bold" />
-              Acessar como visitante
-            </Button>
+            <Link href={"/home"}>
+              <Button>
+                <RocketLaunch size={32} weight="bold" />
+                Acessar como visitante
+              </Button>
+            </Link>
           </ButtonsWrapper>
         </Hero>
       </Container>

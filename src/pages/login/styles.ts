@@ -1,17 +1,27 @@
-import { styled } from "@/styles/stitches.config";
+import { keyframes, styled } from "@/styles/stitches.config";
+
+const entranceAnimation = keyframes({
+  from: {
+    opacity: 0,
+  },
+  to: {
+    opacity: 1,
+  },
+});
 
 export const Container = styled("div", {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
 
-  // maxWidth: "1196px",
   maxWidth: "100vw",
   height: "100vh",
   padding: "$5",
 
   margin: "auto",
-  gap: "$5",
+  gap: "$10",
+
+  animation: `${entranceAnimation} 2s`,
 
   "@media(max-width: 768px)": {
     flexDirection: "column",
