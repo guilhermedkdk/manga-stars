@@ -18,7 +18,7 @@ export const Container = styled("section", {
       padding: "$18 $2",
     },
 
-    "@media (min-width: 1200px)": {
+    "@media (min-width: 1300px)": {
       padding: "$18 $24",
     },
   },
