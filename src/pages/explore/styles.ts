@@ -1,7 +1,19 @@
-import { styled } from "@/styles/stitches.config";
+import { keyframes, styled } from "@/styles/stitches.config";
+
+const entranceAnimationVertical = keyframes({
+  from: {
+    opacity: 0,
+    transform: "translateY(100%)",
+  },
+  to: {
+    opacity: 1,
+    transform: "translateY(0%)",
+  },
+});
 
 export const Title = styled("div", {
   display: "flex",
+  justifyContent: "space-between",
   alignSelf: "normal",
 
   maxWidth: "100%",
@@ -17,6 +29,16 @@ export const Title = styled("div", {
   svg: {
     color: "$green100",
   },
+
+  ".title": {
+    display: "flex",
+    gap: "$3",
+  },
+
+  "@media (max-width: 768px)": {
+    marginTop: "$16",
+    flexDirection: "column",
+  },
 });
 
 export const CenterContainer = styled("div", {
@@ -24,6 +46,8 @@ export const CenterContainer = styled("div", {
   flexDirection: "column",
 
   maxHeight: "calc(100% - 30px)",
+
+  animation: `${entranceAnimationVertical} 0.5s`,
 });
 
 export const FilterContainer = styled("div", {

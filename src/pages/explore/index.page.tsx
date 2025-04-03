@@ -77,8 +77,10 @@ export default function Explore({ categories, mangas }: ExploreProps) {
       )}
 
       <Title>
-        <Binoculars size={32} />
-        <h2>Explorar</h2>
+        <div className="title">
+          <Binoculars size={32} />
+          <h2>Explorar</h2>
+        </div>
         <SearchInput
           placeholder="Buscar mangá ou autor"
           value={search}
