@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { StarsRating } from "../StarsRating";
+import StarsRating from "../StarsRating";
 import { Container, Infos, InfosWrapper, ReadNotification } from "./styles";
 
 interface CardSizeProps {

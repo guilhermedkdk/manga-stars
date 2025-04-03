@@ -2,8 +2,8 @@ import { Category, Manga } from "@prisma/client";
 import { Binoculars, MagnifyingGlass } from "phosphor-react";
 import React, { useState } from "react";
 
-import { FilterButton } from "@/components/FilterButton";
-import { LateralMenu } from "@/components/LateralMenu";
+import FilterButton from "@/components/FilterButton";
+import LateralMenu from "@/components/LateralMenu";
 import PopularCard from "@/components/PopularCard";
 import { SearchInput } from "@/components/SearchInput";
 import { api } from "@/libs/axios";

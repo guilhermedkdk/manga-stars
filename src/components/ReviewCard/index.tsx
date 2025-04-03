@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import { getDateFormattedAndRelative } from "@/utils/timeFormatter";
 
-import { StarsRating } from "../StarsRating";
+import StarsRating from "../StarsRating";
 import {
   CardHeader,
   Container,

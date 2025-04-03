@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { BookmarkSimple, BookOpen } from "phosphor-react";
 
-import { StarsRating } from "@/components/StarsRating";
+import StarsRating from "@/components/StarsRating";
 import { MangaWithRatingAndCategories } from "@/pages/explore/index.page";
 
 import {
@@ -17,7 +17,7 @@ interface MangaCardProps {
   manga: MangaWithRatingAndCategories;
 }
 
-export function MangaCard({ manga }: MangaCardProps) {
+export default function MangaCard({ manga }: MangaCardProps) {
   let numberOfReviews: string;
 
   if (manga.ratings.length === 1) {

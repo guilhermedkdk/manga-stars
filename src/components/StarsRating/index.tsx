@@ -7,7 +7,7 @@ interface StarProps {
   rating?: number;
 }
 
-export function StarsRating({ size = "sm", rating = 3.5 }: StarProps) {
+export default function StarsRating({ size = "sm", rating = 3.5 }: StarProps) {
   let iconSize = 16;
 
   switch (size) {

@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import bookImg from "@/../public/images/mangas/onepiece-cover.jpg";
 
-import { StarsRating } from "../StarsRating";
+import StarsRating from "../StarsRating";
 import { CardHeader, CardInfos, Container, Infos } from "./styles";
 
 export default function RecentReadCard() {

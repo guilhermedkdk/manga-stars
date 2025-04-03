@@ -7,7 +7,11 @@ interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   selected?: boolean;
 }
 
-export function FilterButton({ children, selected, ...rest }: ButtonProps) {
+export default function FilterButton({
+  children,
+  selected,
+  ...rest
+}: ButtonProps) {
   return (
     <ButtonContainer selected={selected} {...rest}>
       {children}

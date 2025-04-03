@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { api } from "@/libs/axios";
 import { MangaWithRatingAndCategories } from "@/pages/explore/index.page";
 
-import { MangaCard } from "./MangaCard";
-import { RatingCard } from "./RatingCard";
+import MangaCard from "./MangaCard";
+import RatingCard from "./RatingCard";
 import { CloseButton, Container, SideMenu, Title } from "./styles";
 
 interface MangaReviewsSidebarProps {
@@ -18,7 +18,7 @@ type RatingProps = RatingInfo & {
   user: UserPrisma;
 };
 
-export function LateralMenu({
+export default function LateralMenu({
   handleCloseMenu,
   manga,
 }: MangaReviewsSidebarProps) {

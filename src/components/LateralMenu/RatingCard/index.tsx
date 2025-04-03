@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { StarsRating } from "@/components/StarsRating";
+import StarsRating from "@/components/StarsRating";
 import { getDateFormattedAndRelative } from "@/utils/timeFormatter";
 
 import { Container, Header, User } from "./styles";
@@ -13,7 +13,7 @@ interface RatingCardProps {
   rate: number;
 }
 
-export function RatingCard({
+export default function RatingCard({
   avatar,
   name,
   date,
