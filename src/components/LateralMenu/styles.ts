@@ -17,15 +17,26 @@ export const Container = styled("section", {
 
   display: "flex",
   justifyContent: "flex-end",
+});
+
+export const ContainerOverlay = styled("section", {
+  position: "fixed",
+  inset: 0,
 
   width: "100vw",
   height: "100vh",
 
-  background: "rgba(0, 0, 0, 0.5)",
+  backgroundColor: "rgba(0, 0, 0, 0.6)",
 });
 
 export const SideMenu = styled("section", {
-  flex: "0 0 660px",
+  position: "fixed",
+  right: 0,
+  top: 0,
+
+  maxWidth: "660px",
+  width: "100vw",
+  height: "100vh",
   padding: "$16 $12",
 
   overflow: "auto",
@@ -48,25 +59,10 @@ export const Title = styled("h6", {
   fontSize: "$sm",
   fontWeight: "$regular",
   color: "$gray200",
-
-  "a, button": {
-    display: "inline-flex",
-    alignItems: "center",
-
-    fontSize: "$md",
-    fontWeight: "$bold",
-    textDecoration: "none",
-    color: "$purple100",
-
-    "&:hover": {
-      opacity: 0.8,
-      transition: "0.2s",
-    },
-  },
 });
 
 export const CloseButton = styled("button", {
-  position: "absolute",
+  position: "fixed",
   top: "$5",
   right: "3rem",
 
@@ -83,5 +79,23 @@ export const CloseButton = styled("button", {
     "&:hover": {
       color: "$gray300",
     },
+  },
+});
+
+export const LoginButton = styled("button", {
+  display: "inline-flex",
+  alignItems: "center",
+
+  fontSize: "$md",
+  color: "$purple100",
+
+  border: "none",
+  background: "none",
+
+  cursor: "pointer",
+
+  "&:hover": {
+    opacity: 0.85,
+    transition: "0.2s",
   },
 });

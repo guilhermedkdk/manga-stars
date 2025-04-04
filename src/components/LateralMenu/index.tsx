@@ -7,7 +7,14 @@ import { MangaWithRatingAndCategories } from "@/pages/explore/index.page";
 
 import MangaCard from "./MangaCard";
 import RatingCard from "./RatingCard";
-import { CloseButton, Container, SideMenu, Title } from "./styles";
+import {
+  CloseButton,
+  Container,
+  ContainerOverlay,
+  LoginButton,
+  SideMenu,
+  Title,
+} from "./styles";
 
 interface MangaReviewsSidebarProps {
   handleCloseMenu(): void;
@@ -35,19 +42,22 @@ export default function LateralMenu({
   }, [manga.id]);
 
   return (
-    <Container onClick={handleCloseMenu}>
-      <CloseButton
-        title="Fechar menu lateral"
-        type="button"
-        onClick={handleCloseMenu}
-      >
-        <X size={24} />
-      </CloseButton>
+    <Container>
+      <ContainerOverlay onClick={handleCloseMenu} />
       <SideMenu>
+        <CloseButton
+          title="Fechar menu lateral"
+          type="button"
+          onClick={handleCloseMenu}
+        >
+          <X size={24} />
+        </CloseButton>
         <MangaCard manga={manga} />
         <Title>
           <span>Avaliações</span>
-          <a href="">Avaliar</a>
+          <LoginButton>
+            <strong>Avaliar</strong>
+          </LoginButton>
         </Title>
         {ratings?.map((rating) => (
           <RatingCard
