@@ -6,6 +6,7 @@ import { Binoculars, ChartLineUp, SignIn, SignOut, User } from "phosphor-react";
 import logoImg from "@/../public/svgs/logo.svg";
 import sidebarBackground from "@/../public/svgs/sidebar.svg";
 
+import { LoginModal } from "../LoginModal";
 import {
   ImageWrapper,
   LoginButton,
@@ -23,6 +24,8 @@ export default function Sidebar() {
 
   return (
     <SidebarContainer>
+      <LoginModal />
+
       <Image
         src={sidebarBackground}
         fill={true}
