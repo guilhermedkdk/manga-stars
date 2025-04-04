@@ -31,7 +31,11 @@ export default function ReviewCard({ user, manga, rating }: CardProps) {
             height={40}
             src={`/${user.avatar_url}`}
             alt=""
-            style={{ borderRadius: "50%" }}
+            style={{
+              objectFit: "cover",
+              overflow: "hidden",
+              borderRadius: "50%",
+            }}
           />
         </UserImageWrapper>
 
