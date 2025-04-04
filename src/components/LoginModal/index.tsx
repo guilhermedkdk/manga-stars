@@ -7,11 +7,19 @@ import google from "@/../public/svgs/google.svg";
 import { Portal } from "../Portal";
 import { CloseButton, ModalButton, ModalWrapper } from "./styles";
 
-export function LoginModal() {
+interface LoginModalProps {
+  onClose: () => void;
+}
+
+export function LoginModal({ onClose }: LoginModalProps) {
   return (
     <Portal>
       <ModalWrapper>
-        <CloseButton title="Fechar Tela de Login" type="button">
+        <CloseButton
+          title="Fechar Tela de Login"
+          type="button"
+          onClick={onClose}
+        >
           <X size={24} />
         </CloseButton>
 

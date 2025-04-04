@@ -79,12 +79,20 @@ export const NavButton = styled(Link, {
   },
 });
 
-export const LoginButton = styled(Link, {
+export const LoginButton = styled("button", {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
 
   gap: "$3",
+
+  border: "none",
+  background: "none",
+
+  fontSize: "$md",
+  color: "$gray200",
+
+  cursor: "pointer",
 
   img: {
     borderRadius: "$full",

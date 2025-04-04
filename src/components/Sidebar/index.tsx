@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Binoculars, ChartLineUp, SignIn, SignOut, User } from "phosphor-react";
+import { useState } from "react";
 
 import logoImg from "@/../public/svgs/logo.svg";
 import sidebarBackground from "@/../public/svgs/sidebar.svg";
@@ -22,9 +23,19 @@ export default function Sidebar() {
   const router = useRouter();
   const currentRoute = router.pathname;
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  async function openModal() {
+    setIsModalOpen(true);
+  }
+
+  async function closeModal() {
+    setIsModalOpen(false);
+  }
+
   return (
     <SidebarContainer>
-      <LoginModal />
+      {isModalOpen && <LoginModal onClose={closeModal} />}
 
       <Image
         src={sidebarBackground}
@@ -65,7 +76,7 @@ export default function Sidebar() {
       </TopContainer>
 
       {session === "authenticated" ? (
-        <LoginButton href={"/"}>
+        <LoginButton>
           <ImageWrapper>
             <User size={24} />
           </ImageWrapper>
@@ -73,7 +84,7 @@ export default function Sidebar() {
           <SignOut size={20} color="#F75A68" />
         </LoginButton>
       ) : (
-        <LoginButton href={"/"}>
+        <LoginButton onClick={openModal}>
           <strong>Fazer login</strong>
           <SignIn size={20} weight="fill" color="#50B2C0" />
         </LoginButton>
