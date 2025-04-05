@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { api } from "@/libs/axios";
 import { MangaWithRatingAndCategories } from "@/pages/explore/index.page";
 
+import { LoginModal } from "../LoginModal";
 import MangaCard from "./MangaCard";
 import RatingCard from "./RatingCard";
 import {
@@ -41,8 +42,19 @@ export default function LateralMenu({
     loadRatings();
   }, [manga.id]);
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  async function openMenu() {
+    setIsMenuOpen(true);
+  }
+
+  async function closeMenu() {
+    setIsMenuOpen(false);
+  }
+
   return (
     <Container>
+      {isMenuOpen && <LoginModal onClose={closeMenu} />}
       <ContainerOverlay onClick={handleCloseMenu} />
       <SideMenu>
         <CloseButton
@@ -55,7 +67,7 @@ export default function LateralMenu({
         <MangaCard manga={manga} />
         <Title>
           <span>Avaliações</span>
-          <LoginButton>
+          <LoginButton onClick={openMenu}>
             <strong>Avaliar</strong>
           </LoginButton>
         </Title>
