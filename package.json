@@ -18,6 +18,7 @@
     "date-fns": "^4.1.0",
     "hamburger-react": "^2.5.2",
     "next": "15.2.2",
+    "next-auth": "^4.24.11",
     "phosphor-react": "^1.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
