@@ -6,8 +6,9 @@ import { api } from "@/libs/axios";
 import { MangaWithRatingAndCategories } from "@/pages/explore/index.page";
 
 import { LoginModal } from "../LoginModal";
-import MangaCard from "./MangaCard";
-import RatingCard from "./RatingCard";
+import MangaCard from "./components/MangaCard";
+import RatingCard from "./components/RatingCard";
+import { ReviewFormCard } from "./components/ReviewFormCard";
 import {
   CloseButton,
   Container,
@@ -42,20 +43,30 @@ export default function LateralMenu({
     loadRatings();
   }, [manga.id]);
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  async function openMenu() {
-    setIsMenuOpen(true);
+  async function openModal() {
+    setIsModalOpen(true);
   }
 
-  async function closeMenu() {
-    setIsMenuOpen(false);
+  async function closeModal() {
+    setIsModalOpen(false);
+  }
+
+  const session = true;
+
+  const [reviewFormIsVisible, setReviewFormIsVisible] = useState(false);
+
+  async function handleChangeReviewFormVisibility() {
+    setReviewFormIsVisible((state) => !state);
   }
 
   return (
     <Container>
-      {isMenuOpen && <LoginModal onClose={closeMenu} />}
+      {isModalOpen && <LoginModal onClose={closeModal} />}
+
       <ContainerOverlay onClick={handleCloseMenu} />
+
       <SideMenu>
         <CloseButton
           title="Fechar menu lateral"
@@ -65,12 +76,20 @@ export default function LateralMenu({
           <X size={24} />
         </CloseButton>
         <MangaCard manga={manga} />
+
         <Title>
           <span>Avaliações</span>
-          <LoginButton onClick={openMenu}>
+          <LoginButton
+            onClick={session ? handleChangeReviewFormVisibility : openModal}
+          >
             <strong>Avaliar</strong>
           </LoginButton>
         </Title>
+
+        {reviewFormIsVisible && (
+          <ReviewFormCard onClose={handleChangeReviewFormVisibility} />
+        )}
+
         {ratings?.map((rating) => (
           <RatingCard
             key={rating.id}
