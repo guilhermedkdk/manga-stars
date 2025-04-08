@@ -1,5 +1,8 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { signIn, useSession } from "next-auth/react";
 import { X } from "phosphor-react";
+import { useEffect } from "react";
 
 import github from "@/../public/svgs/github.svg";
 import google from "@/../public/svgs/google.svg";
@@ -12,6 +15,19 @@ interface LoginModalProps {
 }
 
 export function LoginModal({ onClose }: LoginModalProps) {
+  const router = useRouter();
+  const session = useSession();
+
+  async function handleSignInGoogle() {
+    await signIn("google");
+  }
+
+  useEffect(() => {
+    if (session.status === "authenticated") {
+      router.push("/home");
+    }
+  }, [session, router]);
+
   return (
     <Portal>
       <ModalWrapper>
@@ -25,7 +41,7 @@ export function LoginModal({ onClose }: LoginModalProps) {
 
         <h4>Faça login para deixar sua avaliação</h4>
 
-        <ModalButton>
+        <ModalButton onClick={handleSignInGoogle}>
           <Image src={google} height={32} priority alt="Logotipo do Google" />
           Entrar com o Google
         </ModalButton>
