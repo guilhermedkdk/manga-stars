@@ -1,15 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { signOut, useSession } from "next-auth/react";
 import { Binoculars, ChartLineUp, SignIn, SignOut, User } from "phosphor-react";
 import { useState } from "react";
 
+import userImg from "@/../public/images/users/guilherme.jpg";
 import logoImg from "@/../public/svgs/logo.svg";
 import sidebarBackground from "@/../public/svgs/sidebar.svg";
 
 import { LoginModal } from "../LoginModal";
 import {
   ImageWrapper,
+  InfosWrapper,
   LoginButton,
   NavButton,
   NavigationWrapper,
@@ -18,8 +21,7 @@ import {
 } from "./styles";
 
 export default function Sidebar() {
-  const session = "authenticated";
-
+  const session = useSession();
   const router = useRouter();
   const currentRoute = router.pathname;
 
@@ -31,6 +33,10 @@ export default function Sidebar() {
 
   async function closeModal() {
     setIsModalOpen(false);
+  }
+
+  function handleLogout() {
+    signOut({ callbackUrl: "/" });
   }
 
   return (
@@ -63,9 +69,9 @@ export default function Sidebar() {
             <Binoculars size={24} /> Explorar
           </NavButton>
 
-          {session === "authenticated" && (
+          {session && (
             <NavButton
-              href="/profile"
+              href={`/profile/`}
               active={currentRoute.includes("profile")}
             >
               <User size={24} />
@@ -75,14 +81,16 @@ export default function Sidebar() {
         </NavigationWrapper>
       </TopContainer>
 
-      {session === "authenticated" ? (
-        <LoginButton>
+      {session.status === "authenticated" ? (
+        <InfosWrapper>
           <ImageWrapper>
-            <User size={24} />
+            <Image src={userImg} alt="" width={32} height={32} />
           </ImageWrapper>
-          Guilherme
-          <SignOut size={20} color="#F75A68" />
-        </LoginButton>
+          <p>Guilherme</p>
+          <LoginButton>
+            <SignOut size={20} color="#F75A68" onClick={handleLogout} />
+          </LoginButton>
+        </InfosWrapper>
       ) : (
         <LoginButton onClick={openModal}>
           <strong>Fazer login</strong>

@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { signIn, useSession } from "next-auth/react";
 import { RocketLaunch } from "phosphor-react";
+import { useEffect } from "react";
 
 import github from "@/../public/svgs/github.svg";
 import google from "@/../public/svgs/google.svg";
@@ -18,7 +20,18 @@ import {
 } from "./styles";
 
 export default function Login() {
+  const router = useRouter();
   const session = useSession();
+
+  async function handleSignInGoogle() {
+    await signIn("google");
+  }
+
+  useEffect(() => {
+    if (session.status === "authenticated") {
+      router.push("/home");
+    }
+  }, [session, router]);
 
   return (
     <>
@@ -51,7 +64,7 @@ export default function Login() {
           <h4>Faça seu login ou acesse como visitante</h4>
 
           <ButtonsWrapper>
-            <Button onClick={() => signIn("google")}>
+            <Button onClick={handleSignInGoogle}>
               <Image src={google} height={32} alt="Logotipo do Google" />
               Entrar com o Google
             </Button>
