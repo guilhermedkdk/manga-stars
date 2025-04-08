@@ -5,9 +5,9 @@ import { signOut, useSession } from "next-auth/react";
 import { Binoculars, ChartLineUp, SignIn, SignOut, User } from "phosphor-react";
 import { useState } from "react";
 
-import userImg from "@/../public/images/users/guilherme.jpg";
 import logoImg from "@/../public/svgs/logo.svg";
 import sidebarBackground from "@/../public/svgs/sidebar.svg";
+import avatarPlaceholder from "@/../public/svgs/user.svg";
 
 import { LoginModal } from "../LoginModal";
 import {
@@ -35,7 +35,7 @@ export default function Sidebar() {
     setIsModalOpen(false);
   }
 
-  function handleLogout() {
+  async function handleLogout() {
     signOut({ callbackUrl: "/" });
   }
 
@@ -69,7 +69,7 @@ export default function Sidebar() {
             <Binoculars size={24} /> Explorar
           </NavButton>
 
-          {session && (
+          {session.status === "authenticated" && (
             <NavButton
               href={`/profile/`}
               active={currentRoute.includes("profile")}
@@ -84,9 +84,14 @@ export default function Sidebar() {
       {session.status === "authenticated" ? (
         <InfosWrapper>
           <ImageWrapper>
-            <Image src={userImg} alt="" width={32} height={32} />
+            <Image
+              src={session.data.user?.image || avatarPlaceholder}
+              alt=""
+              width={32}
+              height={32}
+            />
           </ImageWrapper>
-          <p>Guilherme</p>
+          <p>{String(session.data.user?.name).split(" ")[0]}</p>
           <LoginButton>
             <SignOut size={20} color="#F75A68" onClick={handleLogout} />
           </LoginButton>
