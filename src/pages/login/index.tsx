@@ -1,9 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { RocketLaunch } from "phosphor-react";
-import { useEffect } from "react";
 
 import github from "@/../public/svgs/github.svg";
 import google from "@/../public/svgs/google.svg";
@@ -21,17 +19,14 @@ import {
 
 export default function Login() {
   const router = useRouter();
-  const session = useSession();
 
-  async function handleSignInGoogle() {
-    await signIn("google");
+  async function handleSignIn(provider: string) {
+    if (provider === "google") {
+      await signIn("google", { callbackUrl: "/home" });
+    } else if (provider === "github") {
+      await signIn("github", { callbackUrl: "/home" });
+    } else router.push("/home");
   }
-
-  useEffect(() => {
-    if (session.status === "authenticated") {
-      router.push("/home");
-    }
-  }, [session, router]);
 
   return (
     <>
@@ -64,22 +59,22 @@ export default function Login() {
           <h4>Faça seu login ou acesse como visitante</h4>
 
           <ButtonsWrapper>
-            <Button onClick={handleSignInGoogle}>
+            <Button onClick={() => handleSignIn("google")}>
               <Image src={google} height={32} alt="Logotipo do Google" />
               Entrar com o Google
             </Button>
 
-            <Button>
+            <Button onClick={() => handleSignIn("github")}>
               <Image src={github} height={32} alt="Logotipo do GitHub" />
               Entrar com o GitHub
             </Button>
 
-            <Link href={"/home"}>
+            <Button onClick={() => handleSignIn("visitor")}>
               <Button>
                 <RocketLaunch size={32} weight="bold" />
                 Acessar como visitante
               </Button>
-            </Link>
+            </Button>
           </ButtonsWrapper>
         </Hero>
       </Container>
