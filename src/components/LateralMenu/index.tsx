@@ -1,4 +1,5 @@
 import { Rating as RatingInfo, User as UserPrisma } from "@prisma/client";
+import { useSession } from "next-auth/react";
 import { X } from "phosphor-react";
 import { useEffect, useState } from "react";
 
@@ -31,6 +32,8 @@ export default function LateralMenu({
   handleCloseMenu,
   manga,
 }: MangaReviewsSidebarProps) {
+  const session = useSession();
+
   const [ratings, setRatings] = useState<RatingProps[] | null>(null);
 
   useEffect(() => {
@@ -52,8 +55,6 @@ export default function LateralMenu({
   async function closeModal() {
     setIsModalOpen(false);
   }
-
-  const session = true;
 
   const [reviewFormIsVisible, setReviewFormIsVisible] = useState(false);
 
@@ -80,7 +81,11 @@ export default function LateralMenu({
         <Title>
           <span>Avaliações</span>
           <LoginButton
-            onClick={session ? handleChangeReviewFormVisibility : openModal}
+            onClick={
+              session.status === "authenticated"
+                ? handleChangeReviewFormVisibility
+                : openModal
+            }
           >
             <strong>Avaliar</strong>
           </LoginButton>

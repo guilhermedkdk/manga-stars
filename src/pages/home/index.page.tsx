@@ -1,5 +1,6 @@
 import { Category, Manga, Rating, User } from "@prisma/client";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { CaretRight, ChartLineUp } from "phosphor-react";
 
 import PopularCard from "@/components/PopularCard";
@@ -32,7 +33,7 @@ interface HomeProps {
 }
 
 export default function Home({ ratings, mangas }: HomeProps) {
-  const session = "authenticated";
+  const session = useSession();
 
   return (
     <Template>
@@ -43,12 +44,12 @@ export default function Home({ ratings, mangas }: HomeProps) {
 
       <HomeContainer>
         <CenterContainer>
-          {session === "authenticated" && (
+          {session.status === "authenticated" && (
             <>
               <Subtitle>
                 <span>Sua última leitura</span>
                 <Link href={"/"}>
-                  Ver todos
+                  Ver todas
                   <CaretRight size={16} />
                 </Link>
               </Subtitle>
@@ -73,7 +74,7 @@ export default function Home({ ratings, mangas }: HomeProps) {
         <RightContainer>
           <Subtitle>
             <span>Mangás Populares</span>
-            <Link href={"/"}>
+            <Link href={"/explore"}>
               Ver todos
               <CaretRight size={16} />
             </Link>

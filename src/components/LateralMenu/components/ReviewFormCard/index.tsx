@@ -1,9 +1,10 @@
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 import { Check, Star, X } from "phosphor-react";
 import { ChangeEvent, useState } from "react";
 import { Rating } from "react-simple-star-rating";
 
-import userImg from "@/../public/images/users/guilherme.jpg";
+import avatarPlaceholder from "@/../public/svgs/user.svg";
 
 import {
   ActionButton,
@@ -33,12 +34,14 @@ export function ReviewFormCard({ onClose }: ReviewFormCardProps) {
     setRating(rate);
   };
 
+  const session = useSession();
+
   return (
     <Container>
       <Header>
         <User>
           <Image
-            src={userImg}
+            src={session.data?.user?.image || avatarPlaceholder}
             alt=""
             width="40"
             height="40"
@@ -47,7 +50,7 @@ export function ReviewFormCard({ onClose }: ReviewFormCardProps) {
             }}
           />
           <div>
-            <h5>Guilherme</h5>
+            <h5>{session.data?.user?.name}</h5>
           </div>
         </User>
 
