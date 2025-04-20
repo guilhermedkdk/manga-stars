@@ -31,7 +31,7 @@ export default async function handler(
 
   if (search) {
     where.AND.push({
-      book: {
+      manga: {
         OR: [
           {
             name: {
@@ -66,7 +66,7 @@ export default async function handler(
     createdAt: rating.created_at,
     rate: rating.rate,
     description: rating.description,
-    book: {
+    manga: {
       coverURL: rating.manga.cover_url,
       name: rating.manga.name,
       author: rating.manga.author,

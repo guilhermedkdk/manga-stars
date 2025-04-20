@@ -27,7 +27,7 @@ export async function getAllRatings(req: NextApiRequest, res: NextApiResponse) {
     createdAt: rating.created_at,
     rate: rating.rate,
     description: rating.description,
-    book: {
+    manga: {
       coverURL: rating.manga.cover_url,
       name: rating.manga.name,
       author: rating.manga.author,

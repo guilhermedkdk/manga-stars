@@ -12,6 +12,7 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.0.1",
     "@prisma/client": "^6.5.0",
     "@stitches/react": "^1.2.8",
     "axios": "^1.8.4",
@@ -22,6 +23,7 @@
     "phosphor-react": "^1.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.55.0",
     "react-simple-star-rating": "^5.1.7",
     "uuid": "^11.1.0",
     "zod": "^3.24.2"

@@ -9,7 +9,9 @@ const entranceAnimation = keyframes({
   },
 });
 
-export const Container = styled("div", {
+export const Container = styled("form", {
+  position: "relative",
+
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
@@ -21,6 +23,35 @@ export const Container = styled("div", {
   background: "$gray700",
 
   animation: `${entranceAnimation} 0.5s`,
+});
+
+export const FormErrors = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+
+  gap: "$2",
+  marginRight: "auto",
+
+  fontSize: "$sm",
+  color: "red",
+});
+
+export const Loading = styled("div", {
+  position: "absolute",
+  top: "0px",
+  left: "0px",
+  zIndex: 999,
+
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+
+  width: "100%",
+  height: "100%",
+
+  borderRadius: "$md",
+
+  backgroundColor: "rgba(0, 0, 0, 0.6)",
 });
 
 export const Header = styled("header", {

@@ -92,7 +92,12 @@ export default function LateralMenu({
         </Title>
 
         {reviewFormIsVisible && (
-          <ReviewFormCard onClose={handleChangeReviewFormVisibility} />
+          <ReviewFormCard
+            mangaId={manga.id}
+            userId={session.data?.user.id}
+            onClose={handleChangeReviewFormVisibility}
+            closeLateralMenu={handleCloseMenu}
+          />
         )}
 
         {ratings?.map((rating) => (
@@ -102,7 +107,6 @@ export default function LateralMenu({
             name={rating.user.name}
             date={rating.created_at}
             rate={rating.rate}
-            rating={rating}
             description={rating.description}
           />
         ))}
