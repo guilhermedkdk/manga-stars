@@ -1,5 +1,7 @@
 import { Category, Manga, Rating, User } from "@prisma/client";
+import { GetServerSideProps } from "next";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
 import { CaretRight, ChartLineUp } from "phosphor-react";
 
@@ -8,6 +10,7 @@ import RecentReadCard from "@/components/RecentReadCard";
 import ReviewCard from "@/components/ReviewCard";
 import { prisma } from "@/libs/prisma";
 
+import { buildNextAuthOptions } from "../api/auth/[...nextauth].api";
 import Template from "../template";
 import {
   CenterContainer,
@@ -30,9 +33,10 @@ export interface RatingWithUserAndManga extends Rating {
 interface HomeProps {
   ratings: RatingWithUserAndManga[];
   mangas: MangaWithRatingAndCategories[];
+  myLastRating: RatingWithUserAndManga | null;
 }
 
-export default function Home({ ratings, mangas }: HomeProps) {
+export default function Home({ ratings, mangas, myLastRating }: HomeProps) {
   const session = useSession();
 
   return (
@@ -44,16 +48,24 @@ export default function Home({ ratings, mangas }: HomeProps) {
 
       <HomeContainer>
         <CenterContainer>
-          {session.status === "authenticated" && (
+          {session.data?.user && (
             <>
-              <Subtitle>
-                <span>Sua última leitura</span>
-                <Link href={"/"}>
-                  Ver todas
-                  <CaretRight size={16} />
-                </Link>
-              </Subtitle>
-              <RecentReadCard />
+              {myLastRating && (
+                <>
+                  <Subtitle>
+                    <span>Sua última leitura</span>
+                    <Link href={`/profile/${session.data.user.id}`}>
+                      Ver todas
+                      <CaretRight size={16} />
+                    </Link>
+                  </Subtitle>
+                  <RecentReadCard
+                    key={myLastRating.id}
+                    rating={myLastRating}
+                    manga={myLastRating.manga}
+                  />
+                </>
+              )}
             </>
           )}
 
@@ -96,7 +108,30 @@ export default function Home({ ratings, mangas }: HomeProps) {
   );
 }
 
-export async function getStaticProps() {
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const session = await getServerSession(
+    req,
+    res,
+    buildNextAuthOptions(req, res)
+  );
+
+  let myLastRating = null;
+
+  if (session?.user) {
+    myLastRating = await prisma.rating.findFirst({
+      where: {
+        user_id: session.user.id as string,
+      },
+      include: {
+        user: true,
+        manga: true,
+      },
+      orderBy: {
+        created_at: "desc",
+      },
+    });
+  }
+
   const mangas = await prisma.manga.findMany({
     include: {
       ratings: {
@@ -139,11 +174,16 @@ export async function getStaticProps() {
   });
 
   const ratings = await prisma.rating.findMany({
+    where: {
+      NOT: {
+        id: myLastRating?.id,
+      },
+    },
     include: {
       user: true,
       manga: true,
     },
-    take: 3,
+    take: 4,
     orderBy: {
       created_at: "desc",
     },
@@ -153,7 +193,7 @@ export async function getStaticProps() {
     props: {
       mangas: JSON.parse(JSON.stringify(mangasWithRating)),
       ratings: JSON.parse(JSON.stringify(ratings)),
+      myLastRating: JSON.parse(JSON.stringify(myLastRating)),
     },
-    revalidate: 60 * 60 * 24 * 1, // 1 day
   };
-}
+};

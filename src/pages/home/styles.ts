@@ -61,6 +61,7 @@ export const CenterContainer = styled("div", {
   flexDirection: "column",
 
   minWidth: "440px",
+  width: "100%",
   padding: "0 $5 0 0",
 
   overflowY: "overlay",

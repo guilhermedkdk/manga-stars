@@ -1,17 +1,26 @@
+import { Manga, Rating } from "@prisma/client";
 import Image from "next/image";
 
-import bookImg from "@/../public/images/mangas/onepiece-cover.jpg";
+import { getDateFormattedAndRelative } from "@/utils/timeFormatter";
 
 import StarsRating from "../StarsRating";
 import { CardHeader, CardInfos, Container, Infos } from "./styles";
 
-export default function RecentReadCard() {
+interface RecentReadCardProps {
+  manga: Manga;
+  rating: Rating;
+}
+
+export default function RecentReadCard({ manga, rating }: RecentReadCardProps) {
+  const { dateFormatted, dateRelativeToNow, dateString } =
+    getDateFormattedAndRelative(rating.created_at);
+
   return (
     <Container>
       <Image
         width={108}
         height={152}
-        src={bookImg}
+        src={`/${manga.cover_url}`}
         alt=""
         style={{ borderRadius: "4px" }}
       />
@@ -19,18 +28,17 @@ export default function RecentReadCard() {
       <CardInfos>
         <CardHeader>
           <Infos>
-            <span>Há 2 dias</span>
+            <time title={dateFormatted} dateTime={dateString}>
+              {dateRelativeToNow}
+            </time>
           </Infos>
-          <StarsRating rating={1.5} />
+          <StarsRating rating={rating.rate} />
         </CardHeader>
 
         <Infos>
-          <strong>One Piece</strong>
-          <span>Eiichiro Oda</span>
-          <p>
-            Nec tempor nunc in egestas. Euismod nisi eleifend at et in sagittis.
-            Penatibus id vestibulum imperdiet a at imperdiet lectu...
-          </p>
+          <strong>{manga.name}</strong>
+          <span>{manga.author}</span>
+          <p>{rating.description}</p>
         </Infos>
       </CardInfos>
     </Container>
