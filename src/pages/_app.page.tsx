@@ -1,5 +1,8 @@
+import "react-toastify/dist/ReactToastify.css";
+
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
+import { ToastContainer } from "react-toastify";
 
 import { globalStyles } from "@/styles/global";
 
@@ -12,6 +15,7 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <Component {...pageProps} />;
+      <ToastContainer theme="dark" />
     </SessionProvider>
   );
 }

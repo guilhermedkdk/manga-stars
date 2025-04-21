@@ -5,6 +5,7 @@ import { Check, CircleNotch, Star, X } from "phosphor-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Rating } from "react-simple-star-rating";
+import { toast } from "react-toastify";
 import { z } from "zod";
 
 import avatarPlaceholder from "@/../public/svgs/user.svg";
@@ -83,6 +84,7 @@ export function ReviewFormCard({
       mangaId,
     });
     closeLateralMenu();
+    toast.success("Avaliação feita com sucesso!");
   }
 
   return (
