@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
 import { CaretRight, ChartLineUp } from "phosphor-react";
 
+import EmptyCard from "@/components/EmptyCard";
 import PopularCard from "@/components/PopularCard";
 import RecentReadCard from "@/components/RecentReadCard";
 import ReviewCard from "@/components/ReviewCard";
@@ -50,7 +51,7 @@ export default function Home({ ratings, mangas, myLastRating }: HomeProps) {
         <CenterContainer>
           {session.data?.user && (
             <>
-              {myLastRating && (
+              {myLastRating ? (
                 <>
                   <Subtitle>
                     <span>Sua última leitura</span>
@@ -64,6 +65,13 @@ export default function Home({ ratings, mangas, myLastRating }: HomeProps) {
                     rating={myLastRating}
                     manga={myLastRating.manga}
                   />
+                </>
+              ) : (
+                <>
+                  <Subtitle>
+                    <span>Sua última leitura</span>
+                  </Subtitle>
+                  <EmptyCard />
                 </>
               )}
             </>
