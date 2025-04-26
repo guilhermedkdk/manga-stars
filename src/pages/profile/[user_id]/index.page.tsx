@@ -7,16 +7,20 @@ import {
 } from "@prisma/client";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 import {
   BookmarkSimple,
   BookOpen,
   Books,
+  CaretLeft,
   MagnifyingGlass,
   User,
   UserList,
 } from "phosphor-react";
 import { useState } from "react";
 
+import EmptyCard from "@/components/EmptyCard";
 import ProfileCard from "@/components/ProfileCard";
 import { SearchInput } from "@/components/SearchInput";
 import { prisma } from "@/libs/prisma";
@@ -64,6 +68,8 @@ interface ProfileProps {
 }
 
 export default function Profile({ infos, ratings, user }: ProfileProps) {
+  const session = useSession();
+
   const { dateFormatted, dateRelativeToNow, dateString } =
     getDateFormattedAndRelative(user.created_at);
 
@@ -83,8 +89,17 @@ export default function Profile({ infos, ratings, user }: ProfileProps) {
   return (
     <Template>
       <Title>
-        <User size={32} />
-        <h2>Perfil</h2>
+        {session.data?.user.id === user.id ? (
+          <>
+            <User size={32} />
+            <h2>Perfil</h2>
+          </>
+        ) : (
+          <Link href={"/home"}>
+            <CaretLeft size={20} />
+            <h4>Voltar</h4>
+          </Link>
+        )}
       </Title>
 
       <MainContainer>
@@ -99,15 +114,21 @@ export default function Profile({ infos, ratings, user }: ProfileProps) {
           </SearchInput>
 
           <CardsContainer>
-            <CardWrapper>
-              {filteredMangas.map((rating) => (
-                <ProfileCard
-                  key={rating.id}
-                  manga={rating.manga}
-                  rating={rating}
-                />
-              ))}
-            </CardWrapper>
+            {filteredMangas.length > 0 ? (
+              <CardWrapper>
+                {filteredMangas.map((rating) => (
+                  <ProfileCard
+                    key={rating.id}
+                    manga={rating.manga}
+                    rating={rating}
+                  />
+                ))}
+              </CardWrapper>
+            ) : (
+              <CardWrapper>
+                <EmptyCard />
+              </CardWrapper>
+            )}
           </CardsContainer>
         </CenterContainer>
 
@@ -154,13 +175,15 @@ export default function Profile({ infos, ratings, user }: ProfileProps) {
                 <span>Autores lidos </span>
               </div>
             </UserNumber>
-            <UserNumber>
-              <BookmarkSimple size={32} />
-              <div>
-                <h5>{infos.bestGenre.name}</h5>
-                <span>Categoria mais lida </span>
-              </div>
-            </UserNumber>
+            {infos.bestGenre && (
+              <UserNumber>
+                <BookmarkSimple size={32} />
+                <div>
+                  <h5>{infos.bestGenre.name}</h5>
+                  <span>Categoria mais lida </span>
+                </div>
+              </UserNumber>
+            )}
           </UserStats>
         </RightContainer>
       </MainContainer>
@@ -178,6 +201,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       },
       include: {
         ratings: {
+          orderBy: {
+            created_at: "desc",
+          },
           include: {
             manga: {
               include: {
@@ -226,7 +252,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       pages,
       mangasCount: mangas.length,
       authorsCount: uniqueAuthors.length,
-      bestGenre: genreNumbers[0],
+      bestGenre: genreNumbers[0] ? genreNumbers[0] : null,
     };
 
     return {
