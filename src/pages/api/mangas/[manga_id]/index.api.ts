@@ -1,3 +1,6 @@
+// Retorna as Infos detalhadas do Mangá em questão
+// /api/mangas/mangaId
+
 import { NextApiRequest, NextApiResponse } from "next";
 
 import { prisma } from "@/libs/prisma";

@@ -1,6 +1,12 @@
+// Retorna TODOS os mangás
+// /api/mangas
+
 import { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth";
 
 import { prisma } from "@/libs/prisma";
+
+import { buildNextAuthOptions } from "../auth/[...nextauth].api";
 
 export default async function handler(
   req: NextApiRequest,
@@ -46,6 +52,28 @@ export default async function handler(
     };
   });
 
+  let userMangasIds: string[] = [];
+
+  const session = await getServerSession(
+    req,
+    res,
+    buildNextAuthOptions(req, res)
+  );
+
+  if (session) {
+    const userMangas = await prisma.manga.findMany({
+      where: {
+        ratings: {
+          some: {
+            user_id: String(session?.user?.id),
+          },
+        },
+      },
+    });
+
+    userMangasIds = userMangas?.map((x) => x?.id);
+  }
+
   const mangasWithRating = mangasFixedRelationWithCategory.map((manga) => {
     const avgRate =
       manga.ratings.reduce((sum, rateObj) => {
@@ -55,6 +83,7 @@ export default async function handler(
     return {
       ...manga,
       rating: avgRate,
+      alreadyRead: userMangasIds.includes(manga.id),
     };
   });
 
