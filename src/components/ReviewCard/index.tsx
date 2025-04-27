@@ -1,6 +1,6 @@
-import { Manga, Rating, User as UserPrisma } from "@prisma/client";
 import Image from "next/image";
 
+import { RatingWithUserAndManga } from "@/pages/home/index.page";
 import { getDateFormattedAndRelative } from "@/utils/timeFormatter";
 
 import StarsRating from "../StarsRating";
@@ -10,26 +10,25 @@ import {
   Infos,
   InfosWrapper,
   UserImageWrapper,
+  ReadNotice,
 } from "./styles";
 
-export interface CardProps {
-  user: UserPrisma;
-  manga: Manga;
-  rating: Rating;
+interface ReviewCardProps {
+  rating: RatingWithUserAndManga;
 }
 
-export default function ReviewCard({ user, manga, rating }: CardProps) {
+export default function ReviewCard({ rating }: ReviewCardProps) {
   const { dateFormatted, dateRelativeToNow, dateString } =
     getDateFormattedAndRelative(rating.created_at);
 
   return (
     <Container>
       <CardHeader>
-        <UserImageWrapper>
+        <UserImageWrapper href={`/profile/${rating.user.id}`}>
           <Image
             width={40}
             height={40}
-            src={`/${user.avatar_url}`}
+            src={`/${rating.user.avatar_url}`}
             alt=""
             style={{
               objectFit: "cover",
@@ -40,7 +39,7 @@ export default function ReviewCard({ user, manga, rating }: CardProps) {
         </UserImageWrapper>
 
         <Infos>
-          <strong>{user?.name}</strong>
+          <strong>{rating.user.name}</strong>
           <time title={dateFormatted} dateTime={dateString}>
             {dateRelativeToNow}
           </time>
@@ -50,16 +49,20 @@ export default function ReviewCard({ user, manga, rating }: CardProps) {
       </CardHeader>
 
       <InfosWrapper>
+        {rating.alreadyRead && (
+          <ReadNotice>
+            <p>LIDO</p>
+          </ReadNotice>
+        )}
         <Image
           width={108}
           height={152}
-          src={`/${manga.cover_url}`}
+          src={`/${rating.manga.cover_url}`}
           alt=""
-          style={{ borderRadius: "4px" }}
         />
         <Infos>
-          <strong>{manga.name}</strong>
-          <span>{manga.author}</span>
+          <strong>{rating.manga.name}</strong>
+          <span>{rating.manga.author}</span>
           <p>{rating.description}</p>
         </Infos>
       </InfosWrapper>

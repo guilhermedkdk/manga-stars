@@ -5,21 +5,21 @@ import { Container, Infos, InfosWrapper, ReadNotification } from "./styles";
 
 interface CardSizeProps {
   size?: "sm" | "lg";
-  isFinished?: boolean;
   cover: string;
   name: string;
   author: string;
   rating: number;
   onClick?: (e: any) => void;
+  alreadyRead: boolean;
 }
 
 export default function PopularCard({
   size = "sm",
-  isFinished,
   cover,
   name,
   author,
   rating,
+  alreadyRead,
   ...rest
 }: CardSizeProps) {
   return (
@@ -43,10 +43,10 @@ export default function PopularCard({
       )}
 
       <InfosWrapper>
-        {isFinished && (
-          <ReadNotification>
+        {alreadyRead && (
+          <ReadNotice>
             <p>LIDO</p>
-          </ReadNotification>
+          </ReadNotice>
         )}
 
         <Infos>

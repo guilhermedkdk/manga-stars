@@ -21,23 +21,26 @@ import {
   Title,
 } from "./styles";
 
-interface MangaWithRatingAndCategories extends Manga {
-  rating: number;
+export interface MangaWithRatingAndCategories extends Manga {
   categories: Category[];
+  rating: number;
+  ratings: Rating[];
+  alreadyRead: boolean;
 }
 
 export interface RatingWithUserAndManga extends Rating {
   user: User;
   manga: Manga;
+  alreadyRead: boolean;
 }
 
 interface HomeProps {
   ratings: RatingWithUserAndManga[];
   mangas: MangaWithRatingAndCategories[];
-  myLastRating: RatingWithUserAndManga | null;
+  userLastRating: RatingWithUserAndManga;
 }
 
-export default function Home({ ratings, mangas, myLastRating }: HomeProps) {
+export default function Home({ ratings, mangas, userLastRating }: HomeProps) {
   const session = useSession();
 
   return (
@@ -51,7 +54,7 @@ export default function Home({ ratings, mangas, myLastRating }: HomeProps) {
         <CenterContainer>
           {session.data?.user && (
             <>
-              {myLastRating ? (
+              {userLastRating ? (
                 <>
                   <Subtitle>
                     <span>Sua última leitura</span>
@@ -61,9 +64,9 @@ export default function Home({ ratings, mangas, myLastRating }: HomeProps) {
                     </Link>
                   </Subtitle>
                   <RecentReadCard
-                    key={myLastRating.id}
-                    rating={myLastRating}
-                    manga={myLastRating.manga}
+                    key={userLastRating.id}
+                    rating={userLastRating}
+                    manga={userLastRating.manga}
                   />
                 </>
               ) : (
@@ -82,12 +85,7 @@ export default function Home({ ratings, mangas, myLastRating }: HomeProps) {
           </Subtitle>
 
           {ratings.map((rating) => (
-            <ReviewCard
-              key={rating.id}
-              user={rating.user}
-              manga={rating.manga}
-              rating={rating}
-            />
+            <ReviewCard key={rating.id} rating={rating} />
           ))}
         </CenterContainer>
 
@@ -108,6 +106,7 @@ export default function Home({ ratings, mangas, myLastRating }: HomeProps) {
               name={manga.name}
               cover={manga.cover_url}
               rating={manga.rating}
+              alreadyRead={manga.alreadyRead}
             />
           ))}
         </RightContainer>
@@ -123,10 +122,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     buildNextAuthOptions(req, res)
   );
 
-  let myLastRating = null;
+  // Buscando a última avaliação do usuário, caso exista
+  let userLastRating = null;
 
   if (session?.user) {
-    myLastRating = await prisma.rating.findFirst({
+    userLastRating = await prisma.rating.findFirst({
       where: {
         user_id: session.user.id as string,
       },
@@ -140,6 +140,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     });
   }
 
+  // Buscando e filtrando os 4 mangas mais populares
   const mangas = await prisma.manga.findMany({
     include: {
       ratings: {
@@ -162,14 +163,33 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
   });
 
-  const mangasFixedRelationWithCategory = mangas.map((manga) => {
+  // Retornando os mangas com a categoria
+  const mangasWithCategory = mangas.map((manga) => {
     return {
       ...manga,
       categories: manga.categories.map((category) => category.category),
     };
   });
 
-  const mangasWithRating = mangasFixedRelationWithCategory.map((manga) => {
+  // Verificando se um livro foi lido pelo usuário logado
+  let userMangasIds: string[] = [];
+
+  if (session) {
+    const userMangas = await prisma.manga.findMany({
+      where: {
+        ratings: {
+          some: {
+            user_id: String(session?.user?.id),
+          },
+        },
+      },
+    });
+
+    userMangasIds = userMangas?.map((x) => x?.id);
+  }
+
+  // Retornando os mangas com a categoria + nota média + verificação de leitura
+  const mangasWithRating = mangasWithCategory.map((manga) => {
     const avgRate =
       manga.ratings.reduce((sum, rateObj) => {
         return sum + rateObj.rate;
@@ -178,13 +198,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     return {
       ...manga,
       rating: avgRate,
+      alreadyRead: userMangasIds.includes(manga.id),
     };
   });
 
+  // Retornando as 4 avaliações mais recentes (que não seja a última avaliação do usuário)
   const ratings = await prisma.rating.findMany({
     where: {
       NOT: {
-        id: myLastRating?.id,
+        id: userLastRating?.id,
       },
     },
     include: {
@@ -197,11 +219,20 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
   });
 
+  // Retornando as 4 avaliações mais recentes com a verificação de leitura
+  const ratingWithReadStatus = ratings.map((rating) => {
+    return {
+      ...rating,
+      alreadyRead: userMangasIds.includes(rating.manga.id),
+    };
+  });
+
+  // Retorno final dos Livros(livros|categoria|nota média|verificação de leitura) + Últimas 4 Avaliações(com verificação de leitura) + Última avaliação do Usuário
   return {
     props: {
       mangas: JSON.parse(JSON.stringify(mangasWithRating)),
-      ratings: JSON.parse(JSON.stringify(ratings)),
-      myLastRating: JSON.parse(JSON.stringify(myLastRating)),
+      ratings: JSON.parse(JSON.stringify(ratingWithReadStatus)),
+      userLastRating: JSON.parse(JSON.stringify(userLastRating)),
     },
   };
 };

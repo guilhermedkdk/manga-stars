@@ -1,6 +1,9 @@
 import { styled } from "@/styles/stitches.config";
+import Link from "next/link";
 
 export const Container = styled("div", {
+  position: "relative",
+
   display: "flex",
   flexDirection: "column",
 
@@ -18,7 +21,6 @@ export const Container = styled("div", {
 
   "&:hover": {
     border: "2px solid $gray600",
-    cursor: "pointer",
   },
 });
 
@@ -34,7 +36,7 @@ export const CardHeader = styled("div", {
   },
 });
 
-export const UserImageWrapper = styled("div", {
+export const UserImageWrapper = styled(Link, {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -76,4 +78,20 @@ export const InfosWrapper = styled("div", {
 
   height: "100%",
   gap: "$5",
+});
+
+export const ReadNotice = styled("div", {
+  position: "absolute",
+  top: "-2px",
+  right: "-2px",
+
+  display: "flex",
+  padding: "$1 $3",
+
+  borderRadius: "0 $md 0 $sm",
+
+  fontSize: "$xs",
+  color: "$green100",
+
+  backgroundColor: "$green300",
 });

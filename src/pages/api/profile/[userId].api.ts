@@ -46,7 +46,7 @@ export default async function handler(
       (acc, rating) => acc + rating.manga.total_volumes,
       0
     );
-    const ratedBooks = profile.ratings.length;
+    const ratedMangas = profile.ratings.length;
     const readAuthors = profile.ratings.reduce((acc, rating) => {
       if (!acc.includes(rating.manga.author)) {
         acc.push(rating.manga.author);
@@ -70,7 +70,7 @@ export default async function handler(
       },
       ratings: profile.ratings,
       readPages,
-      ratedBooks,
+      ratedMangas,
       readAuthors: readAuthors?.length,
       mostReadCategory,
     };

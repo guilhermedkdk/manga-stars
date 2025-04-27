@@ -71,7 +71,7 @@ export default function Sidebar() {
 
           {session.status === "authenticated" && (
             <NavButton
-              href={`/profile/`}
+              href={`/profile/${session.data.user.id}`}
               active={currentRoute.includes("profile")}
             >
               <User size={24} />
@@ -85,7 +85,7 @@ export default function Sidebar() {
         <InfosWrapper>
           <ImageWrapper>
             <Image
-              src={session.data.user?.image || avatarPlaceholder}
+              src={session.data.user?.avatar_url || avatarPlaceholder}
               alt=""
               width={32}
               height={32}
