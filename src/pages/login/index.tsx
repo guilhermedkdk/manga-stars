@@ -70,10 +70,8 @@ export default function Login() {
             </Button>
 
             <Button onClick={() => handleSignIn("visitor")}>
-              <Button>
-                <RocketLaunch size={32} weight="bold" />
-                Acessar como visitante
-              </Button>
+              <RocketLaunch size={32} weight="bold" />
+              Acessar como visitante
             </Button>
           </ButtonsWrapper>
         </Hero>
