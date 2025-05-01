@@ -9,6 +9,7 @@ import { GetServerSideProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { NextSeo } from "next-seo";
 import {
   BookmarkSimple,
   BookOpen,
@@ -87,107 +88,111 @@ export default function Profile({ infos, ratings, user }: ProfileProps) {
   });
 
   return (
-    <Template>
-      <Title>
-        {session.data?.user.id === user.id ? (
-          <>
-            <User size={32} />
-            <h2>Perfil</h2>
-          </>
-        ) : (
-          <Link href={"/home"}>
-            <CaretLeft size={20} />
-            <h4>Voltar</h4>
-          </Link>
-        )}
-      </Title>
+    <>
+      <NextSeo title="Perfil | Manga Stars" />
 
-      <MainContainer>
-        <CenterContainer>
-          <SearchInput
-            placeholder="Buscar mangá ou autor"
-            size="md"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          >
-            <MagnifyingGlass size={20} />
-          </SearchInput>
+      <Template>
+        <Title>
+          {session.data?.user.id === user.id ? (
+            <>
+              <User size={32} />
+              <h2>Perfil</h2>
+            </>
+          ) : (
+            <Link href={"/home"}>
+              <CaretLeft size={20} />
+              <h4>Voltar</h4>
+            </Link>
+          )}
+        </Title>
 
-          <CardsContainer>
-            {filteredMangas.length > 0 ? (
-              <CardWrapper>
-                {filteredMangas.map((rating) => (
-                  <ProfileCard
-                    key={rating.id}
-                    manga={rating.manga}
-                    rating={rating}
-                  />
-                ))}
-              </CardWrapper>
-            ) : (
-              <CardWrapper>
-                <EmptyCard />
-              </CardWrapper>
-            )}
-          </CardsContainer>
-        </CenterContainer>
+        <MainContainer>
+          <CenterContainer>
+            <SearchInput
+              placeholder="Buscar mangá ou autor"
+              size="md"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            >
+              <MagnifyingGlass size={20} />
+            </SearchInput>
 
-        <RightContainer>
-          <ImageWrapper>
-            <Image
-              width={70}
-              height={70}
-              src={`/${user.avatar_url}`}
-              alt=""
-              style={{
-                objectFit: "cover",
-                overflow: "hidden",
-                borderRadius: "50%",
-              }}
-            />
-          </ImageWrapper>
-          <p>{user.name}</p>
-          <time title={dateFormatted} dateTime={dateString}>
-            membro(a) {dateRelativeToNow}
-          </time>
+            <CardsContainer>
+              {filteredMangas.length > 0 ? (
+                <CardWrapper>
+                  {filteredMangas.map((rating) => (
+                    <ProfileCard
+                      key={rating.id}
+                      manga={rating.manga}
+                      rating={rating}
+                    />
+                  ))}
+                </CardWrapper>
+              ) : (
+                <CardWrapper>
+                  <EmptyCard />
+                </CardWrapper>
+              )}
+            </CardsContainer>
+          </CenterContainer>
 
-          <Line />
+          <RightContainer>
+            <ImageWrapper>
+              <Image
+                width={70}
+                height={70}
+                src={`/${user.avatar_url}`}
+                alt=""
+                style={{
+                  objectFit: "cover",
+                  overflow: "hidden",
+                  borderRadius: "50%",
+                }}
+              />
+            </ImageWrapper>
+            <p>{user.name}</p>
+            <time title={dateFormatted} dateTime={dateString}>
+              membro(a) {dateRelativeToNow}
+            </time>
 
-          <UserStats>
-            <UserNumber>
-              <BookOpen size={32} />
-              <div>
-                <h5>{infos.pages}</h5>
-                <span>Volumes lidas </span>
-              </div>
-            </UserNumber>
-            <UserNumber>
-              <Books size={32} />
-              <div>
-                <h5>{infos.mangasCount}</h5>
-                <span>Mangás avaliados </span>
-              </div>
-            </UserNumber>
-            <UserNumber>
-              <UserList size={32} />
-              <div>
-                <h5>{infos.authorsCount}</h5>
-                <span>Autores lidos </span>
-              </div>
-            </UserNumber>
-            {infos.bestGenre && (
+            <Line />
+
+            <UserStats>
               <UserNumber>
-                <BookmarkSimple size={32} />
+                <BookOpen size={32} />
                 <div>
-                  <h5>{infos.bestGenre.name}</h5>
-                  <span>Categoria mais lida </span>
+                  <h5>{infos.pages}</h5>
+                  <span>Volumes lidas </span>
                 </div>
               </UserNumber>
-            )}
-          </UserStats>
-        </RightContainer>
-      </MainContainer>
-    </Template>
+              <UserNumber>
+                <Books size={32} />
+                <div>
+                  <h5>{infos.mangasCount}</h5>
+                  <span>Mangás avaliados </span>
+                </div>
+              </UserNumber>
+              <UserNumber>
+                <UserList size={32} />
+                <div>
+                  <h5>{infos.authorsCount}</h5>
+                  <span>Autores lidos </span>
+                </div>
+              </UserNumber>
+              {infos.bestGenre && (
+                <UserNumber>
+                  <BookmarkSimple size={32} />
+                  <div>
+                    <h5>{infos.bestGenre.name}</h5>
+                    <span>Categoria mais lida </span>
+                  </div>
+                </UserNumber>
+              )}
+            </UserStats>
+          </RightContainer>
+        </MainContainer>
+      </Template>
+    </>
   );
 }
 

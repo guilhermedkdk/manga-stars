@@ -1,6 +1,7 @@
 import { Category } from "@prisma/client";
 import { GetServerSideProps } from "next";
 import { getServerSession } from "next-auth";
+import { NextSeo } from "next-seo";
 import { Binoculars, MagnifyingGlass } from "phosphor-react";
 import React, { useState } from "react";
 
@@ -71,60 +72,64 @@ export default function Explore({ categories, mangas }: ExploreProps) {
   }
 
   return (
-    <Template>
-      {sidebarShouldBeOpen && (
-        <LateralMenu handleCloseMenu={deselectManga} manga={selectedManga} />
-      )}
+    <>
+      <NextSeo title="Explorar | Manga Stars" />
 
-      <Title>
-        <div className="title">
-          <Binoculars size={32} />
-          <h2>Explorar</h2>
-        </div>
-        <SearchInput
-          placeholder="Buscar mangá ou autor"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        >
-          <MagnifyingGlass size={20} />
-        </SearchInput>
-      </Title>
+      <Template>
+        {sidebarShouldBeOpen && (
+          <LateralMenu handleCloseMenu={deselectManga} manga={selectedManga} />
+        )}
 
-      <CenterContainer>
-        <FilterContainer>
-          <FilterButton
-            selected={!categorySelected}
-            onClick={() => selectCategory(null)}
+        <Title>
+          <div className="title">
+            <Binoculars size={32} />
+            <h2>Explorar</h2>
+          </div>
+          <SearchInput
+            placeholder="Buscar mangá ou autor"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           >
-            Todos
-          </FilterButton>
+            <MagnifyingGlass size={20} />
+          </SearchInput>
+        </Title>
 
-          {categories.map((category) => (
+        <CenterContainer>
+          <FilterContainer>
             <FilterButton
-              key={category.id}
-              selected={categorySelected === category.id}
-              onClick={() => selectCategory(category.id)}
+              selected={!categorySelected}
+              onClick={() => selectCategory(null)}
             >
-              {category.name}
+              Todos
             </FilterButton>
-          ))}
-        </FilterContainer>
-        <CardsContainer>
-          {filteredMangas.map((manga) => (
-            <PopularCard
-              key={manga.id}
-              size="lg"
-              author={manga.author}
-              name={manga.name}
-              cover={manga.cover_url}
-              rating={manga.rating}
-              onClick={() => selectManga(manga)}
-              alreadyRead={manga.alreadyRead}
-            />
-          ))}
-        </CardsContainer>
-      </CenterContainer>
-    </Template>
+
+            {categories.map((category) => (
+              <FilterButton
+                key={category.id}
+                selected={categorySelected === category.id}
+                onClick={() => selectCategory(category.id)}
+              >
+                {category.name}
+              </FilterButton>
+            ))}
+          </FilterContainer>
+          <CardsContainer>
+            {filteredMangas.map((manga) => (
+              <PopularCard
+                key={manga.id}
+                size="lg"
+                author={manga.author}
+                name={manga.name}
+                cover={manga.cover_url}
+                rating={manga.rating}
+                onClick={() => selectManga(manga)}
+                alreadyRead={manga.alreadyRead}
+              />
+            ))}
+          </CardsContainer>
+        </CenterContainer>
+      </Template>
+    </>
   );
 }
 

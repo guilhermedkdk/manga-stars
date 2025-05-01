@@ -44,9 +44,9 @@ export default function PopularCard({
 
       <InfosWrapper>
         {alreadyRead && (
-          <ReadNotice>
+          <ReadNotification>
             <p>LIDO</p>
-          </ReadNotice>
+          </ReadNotification>
         )}
 
         <Infos>

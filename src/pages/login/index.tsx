@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
+import { NextSeo } from "next-seo";
 import { RocketLaunch } from "phosphor-react";
 
 import github from "@/../public/svgs/github.svg";
@@ -30,6 +31,8 @@ export default function Login() {
 
   return (
     <>
+      <NextSeo title="Login | Manga Stars" />
+
       <Container>
         <LogoFull>
           <Image

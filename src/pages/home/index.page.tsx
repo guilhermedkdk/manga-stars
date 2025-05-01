@@ -3,6 +3,7 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
+import { NextSeo } from "next-seo";
 import { CaretRight, ChartLineUp } from "phosphor-react";
 
 import EmptyCard from "@/components/EmptyCard";
@@ -44,74 +45,78 @@ export default function Home({ ratings, mangas, userLastRating }: HomeProps) {
   const session = useSession();
 
   return (
-    <Template>
-      <Title>
-        <ChartLineUp size={32} />
-        <h2>Início</h2>
-      </Title>
+    <>
+      <NextSeo title="Início | Manga Stars" />
 
-      <HomeContainer>
-        <CenterContainer>
-          {session.data?.user && (
-            <>
-              {userLastRating ? (
-                <>
-                  <Subtitle>
-                    <span>Sua última leitura</span>
-                    <Link href={`/profile/${session.data.user.id}`}>
-                      Ver todas
-                      <CaretRight size={16} />
-                    </Link>
-                  </Subtitle>
-                  <RecentReadCard
-                    key={userLastRating.id}
-                    rating={userLastRating}
-                    manga={userLastRating.manga}
-                  />
-                </>
-              ) : (
-                <>
-                  <Subtitle>
-                    <span>Sua última leitura</span>
-                  </Subtitle>
-                  <EmptyCard />
-                </>
-              )}
-            </>
-          )}
+      <Template>
+        <Title>
+          <ChartLineUp size={32} />
+          <h2>Início</h2>
+        </Title>
 
-          <Subtitle>
-            <span>Avaliações mais recentes</span>
-          </Subtitle>
+        <HomeContainer>
+          <CenterContainer>
+            {session.data?.user && (
+              <>
+                {userLastRating ? (
+                  <>
+                    <Subtitle>
+                      <span>Sua última leitura</span>
+                      <Link href={`/profile/${session.data.user.id}`}>
+                        Ver todas
+                        <CaretRight size={16} />
+                      </Link>
+                    </Subtitle>
+                    <RecentReadCard
+                      key={userLastRating.id}
+                      rating={userLastRating}
+                      manga={userLastRating.manga}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Subtitle>
+                      <span>Sua última leitura</span>
+                    </Subtitle>
+                    <EmptyCard />
+                  </>
+                )}
+              </>
+            )}
 
-          {ratings.map((rating) => (
-            <ReviewCard key={rating.id} rating={rating} />
-          ))}
-        </CenterContainer>
+            <Subtitle>
+              <span>Avaliações mais recentes</span>
+            </Subtitle>
 
-        <RightContainer>
-          <Subtitle>
-            <span>Mangás Populares</span>
-            <Link href={"/explore"}>
-              Ver todos
-              <CaretRight size={16} />
-            </Link>
-          </Subtitle>
+            {ratings.map((rating) => (
+              <ReviewCard key={rating.id} rating={rating} />
+            ))}
+          </CenterContainer>
 
-          {mangas.map((manga) => (
-            <PopularCard
-              key={manga.id}
-              size="sm"
-              author={manga.author}
-              name={manga.name}
-              cover={manga.cover_url}
-              rating={manga.rating}
-              alreadyRead={manga.alreadyRead}
-            />
-          ))}
-        </RightContainer>
-      </HomeContainer>
-    </Template>
+          <RightContainer>
+            <Subtitle>
+              <span>Mangás Populares</span>
+              <Link href={"/explore"}>
+                Ver todos
+                <CaretRight size={16} />
+              </Link>
+            </Subtitle>
+
+            {mangas.map((manga) => (
+              <PopularCard
+                key={manga.id}
+                size="sm"
+                author={manga.author}
+                name={manga.name}
+                cover={manga.cover_url}
+                rating={manga.rating}
+                alreadyRead={manga.alreadyRead}
+              />
+            ))}
+          </RightContainer>
+        </HomeContainer>
+      </Template>
+    </>
   );
 }
 
