@@ -4,7 +4,7 @@ import { X } from "phosphor-react";
 import { useEffect, useState } from "react";
 
 import { api } from "@/libs/axios";
-import { MangaWithRatingAndCategories } from "@/pages/explore/index.page";
+import { MangaWithRatingAndCategories } from "@/pages/home/index.page";
 
 import { LoginModal } from "../LoginModal";
 import MangaCard from "./components/MangaCard";
@@ -24,9 +24,9 @@ interface MangaReviewsSidebarProps {
   manga: MangaWithRatingAndCategories;
 }
 
-type RatingProps = RatingInfo & {
+interface RatingProps extends RatingInfo {
   user: UserPrisma;
-};
+}
 
 export default function LateralMenu({
   handleCloseMenu,
@@ -34,7 +34,7 @@ export default function LateralMenu({
 }: MangaReviewsSidebarProps) {
   const session = useSession();
 
-  const [ratings, setRatings] = useState<RatingProps[] | null>(null);
+  const [ratings, setRatings] = useState<RatingProps[]>([]);
 
   useEffect(() => {
     async function loadRatings() {
@@ -108,6 +108,7 @@ export default function LateralMenu({
             date={rating.created_at}
             rate={rating.rate}
             description={rating.description}
+            user={rating.user_id}
           />
         ))}
       </SideMenu>

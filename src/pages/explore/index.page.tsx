@@ -1,4 +1,6 @@
-import { Category, Manga } from "@prisma/client";
+import { Category } from "@prisma/client";
+import { GetServerSideProps } from "next";
+import { getServerSession } from "next-auth";
 import { Binoculars, MagnifyingGlass } from "phosphor-react";
 import React, { useState } from "react";
 
@@ -9,6 +11,8 @@ import { SearchInput } from "@/components/SearchInput";
 import { api } from "@/libs/axios";
 import { prisma } from "@/libs/prisma";
 
+import { buildNextAuthOptions } from "../api/auth/[...nextauth].api";
+import { MangaWithRatingAndCategories } from "../home/index.page";
 import Template from "../template";
 import {
   CardsContainer,
@@ -17,23 +21,17 @@ import {
   Title,
 } from "./styles";
 
-export interface MangaWithRatingAndCategories extends Manga {
-  rating: number;
-  categories: Category[];
-  ratings: any[];
-}
-
 export interface ExploreProps {
   categories: Category[];
   mangas: MangaWithRatingAndCategories[];
 }
 
 export default function Explore({ categories, mangas }: ExploreProps) {
+  // Carregamento de todos os mangas
   const [mangasList, setMangasList] =
     useState<MangaWithRatingAndCategories[]>(mangas);
 
-  const [search, setSearch] = useState("");
-
+  // Filtragem dos mangas pela categoria no FilterButton
   const [categorySelected, setCategorySelected] = useState<string | null>(null);
 
   async function selectCategory(categoryId: string | null) {
@@ -46,6 +44,8 @@ export default function Explore({ categories, mangas }: ExploreProps) {
     setCategorySelected(categoryId);
   }
 
+  // Filtragem pelo nome dos mangas/autores no SearchInput
+  const [search, setSearch] = useState("");
   const filteredMangas = mangasList?.filter((manga) => {
     return (
       manga.name
@@ -57,9 +57,9 @@ export default function Explore({ categories, mangas }: ExploreProps) {
     );
   });
 
+  // Abertura do LateralMenu ao selecionar um manga
   const [selectedManga, setSelectedManga] =
     useState<MangaWithRatingAndCategories | null>(null);
-
   const sidebarShouldBeOpen = !!selectedManga;
 
   function selectManga(manga: MangaWithRatingAndCategories) {
@@ -119,6 +119,7 @@ export default function Explore({ categories, mangas }: ExploreProps) {
               cover={manga.cover_url}
               rating={manga.rating}
               onClick={() => selectManga(manga)}
+              alreadyRead={manga.alreadyRead}
             />
           ))}
         </CardsContainer>
@@ -126,8 +127,19 @@ export default function Explore({ categories, mangas }: ExploreProps) {
     </Template>
   );
 }
-export async function getStaticProps() {
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  // Capturando as infos da Sessão
+  const session = await getServerSession(
+    req,
+    res,
+    buildNextAuthOptions(req, res)
+  );
+
+  // Buscando as Categorias
   const categories = await prisma.category.findMany();
+
+  // Buscando os mangas com as notas e categorias
   const mangas = await prisma.manga.findMany({
     include: {
       ratings: {
@@ -143,6 +155,7 @@ export async function getStaticProps() {
     },
   });
 
+  // Retornando os mangas com a categoria para poder filtrar
   const mangasFixedRelationWithCategory = mangas.map((manga) => {
     return {
       ...manga,
@@ -150,6 +163,24 @@ export async function getStaticProps() {
     };
   });
 
+  // Verificando se um manga foi lido pelo usuário logado
+  let userMangasIds: string[] = [];
+
+  if (session) {
+    const userMangas = await prisma.manga.findMany({
+      where: {
+        ratings: {
+          some: {
+            user_id: String(session?.user?.id),
+          },
+        },
+      },
+    });
+
+    userMangasIds = userMangas?.map((x) => x?.id);
+  }
+
+  // Retornando os mangas com a categoria + nota média + verificação de leitura
   const mangasWithRating = mangasFixedRelationWithCategory.map((manga) => {
     const avgRate =
       manga.ratings.reduce((sum, rateObj) => {
@@ -159,14 +190,15 @@ export async function getStaticProps() {
     return {
       ...manga,
       rating: avgRate,
+      alreadyRead: userMangasIds.includes(manga.id),
     };
   });
 
+  // Retorno final dos mangas(mangas|categoria|nota média|verificação de leitura) + categorias(para os botões de filtragem)
   return {
     props: {
       categories: JSON.parse(JSON.stringify(categories)),
       mangas: JSON.parse(JSON.stringify(mangasWithRating)),
     },
-    revalidate: 60 * 60 * 24 * 1, // 1 day
   };
-}
+};

@@ -77,7 +77,7 @@ export function ReviewFormCard({
 
   // Envio do Formulário
   async function handleCreateRating(data: CreateRatingFormData) {
-    await api.post(`/ratings/`, {
+    await api.post(`/ratings/${mangaId}`, {
       rate: data.rate,
       description: data.description,
       userId,

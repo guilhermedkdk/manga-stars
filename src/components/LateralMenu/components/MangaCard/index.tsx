@@ -2,7 +2,7 @@ import Image from "next/image";
 import { BookmarkSimple, BookOpen } from "phosphor-react";
 
 import StarsRating from "@/components/StarsRating";
-import { MangaWithRatingAndCategories } from "@/pages/explore/index.page";
+import { MangaWithRatingAndCategories } from "@/pages/home/index.page";
 
 import {
   Container,
@@ -48,7 +48,7 @@ export default function MangaCard({ manga }: MangaCardProps) {
           <BookmarkSimple size={32} />
           <div>
             <h5>Categoria</h5>
-            {manga.categories.map((category, index) => (
+            {manga.categories?.map((category, index) => (
               <span key={category.id}>
                 {(index ? ", " : "") + category.name}
               </span>
