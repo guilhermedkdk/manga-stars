@@ -25,6 +25,7 @@ import EmptyCard from "@/components/EmptyCard";
 import ProfileCard from "@/components/ProfileCard";
 import { SearchInput } from "@/components/SearchInput";
 import { prisma } from "@/libs/prisma";
+import { RatingWithUserAndManga } from "@/pages/home/index.page";
 import Template from "@/pages/template";
 import { getDateFormattedAndRelative } from "@/utils/timeFormatter";
 
@@ -50,7 +51,7 @@ interface ProfileProps {
   };
 
   user: UserPrisma & {
-    ratings: (Rating & {
+    ratings: (RatingWithUserAndManga & {
       manga: Manga & {
         categories: (CategoriesOnMangas & {
           category: Category;

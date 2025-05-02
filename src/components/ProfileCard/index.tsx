@@ -1,6 +1,7 @@
-import { Manga, Rating } from "@prisma/client";
+import { Manga } from "@prisma/client";
 import Image from "next/image";
 
+import { RatingWithUserAndManga } from "@/pages/home/index.page";
 import { getDateFormattedAndRelative } from "@/utils/timeFormatter";
 
 import StarsRating from "../StarsRating";
@@ -16,14 +17,13 @@ import {
 
 interface ProfileCardProps {
   manga: Manga;
-  rating: Rating;
+  rating: RatingWithUserAndManga;
 }
 
 export default function ProfileCard({ manga, rating }: ProfileCardProps) {
   const { dateFormatted, dateRelativeToNow, dateString } =
     getDateFormattedAndRelative(rating.created_at);
 
-  const isFinished = true;
   return (
     <Container>
       <time title={dateFormatted} dateTime={dateString}>
@@ -40,7 +40,7 @@ export default function ProfileCard({ manga, rating }: ProfileCardProps) {
           />
 
           <InfosWrapper>
-            {isFinished && (
+            {rating.alreadyRead && (
               <ReadNotice>
                 <p>LIDO</p>
               </ReadNotice>
