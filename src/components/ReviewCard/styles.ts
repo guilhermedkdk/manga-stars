@@ -1,5 +1,6 @@
-import { styled } from "@/styles/stitches.config";
 import Link from "next/link";
+
+import { styled } from "@/styles/stitches.config";
 
 export const Container = styled("div", {
   position: "relative",

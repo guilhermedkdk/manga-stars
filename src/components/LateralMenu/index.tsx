@@ -103,7 +103,7 @@ export default function LateralMenu({
         {ratings?.map((rating) => (
           <RatingCard
             key={rating.id}
-            avatar={`/${rating.user.avatar_url}`}
+            avatar={`${rating.user.avatar_url}`}
             name={rating.user.name}
             date={rating.created_at}
             rate={rating.rate}

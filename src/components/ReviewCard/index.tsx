@@ -9,8 +9,8 @@ import {
   Container,
   Infos,
   InfosWrapper,
-  UserImageWrapper,
   ReadNotice,
+  UserImageWrapper,
 } from "./styles";
 
 interface ReviewCardProps {
@@ -28,7 +28,7 @@ export default function ReviewCard({ rating }: ReviewCardProps) {
           <Image
             width={40}
             height={40}
-            src={`/${rating.user.avatar_url}`}
+            src={`${rating.user.avatar_url}`}
             alt=""
             style={{
               objectFit: "cover",
