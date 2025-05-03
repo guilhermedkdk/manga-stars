@@ -48,6 +48,10 @@ export const CenterContainer = styled("div", {
   maxHeight: "calc(100% - 30px)",
 
   animation: `${entranceAnimationVertical} 0.5s`,
+
+  "@media (max-width: 768px)": {
+    overflow: "inherit",
+  },
 });
 
 export const FilterContainer = styled("div", {

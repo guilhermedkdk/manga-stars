@@ -6,7 +6,7 @@ export const Container = styled("div", {
   display: "flex",
   alignItems: "center",
 
-  width: "324px",
+  width: "100%",
   padding: "$4 $5",
   border: "2px solid $gray700",
   borderRadius: "$md",
@@ -19,6 +19,10 @@ export const Container = styled("div", {
   "&:hover": {
     border: "2px solid $gray600",
     cursor: "pointer",
+  },
+
+  "@media (min-width: 1300px)": {
+    width: "324px",
   },
 });
 

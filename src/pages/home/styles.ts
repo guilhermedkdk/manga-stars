@@ -60,7 +60,7 @@ export const CenterContainer = styled("div", {
   display: "flex",
   flexDirection: "column",
 
-  minWidth: "440px",
+  // minWidth: "440px",
   width: "100%",
   padding: "0 $5 0 0",
 
@@ -70,6 +70,10 @@ export const CenterContainer = styled("div", {
 
   "@media (max-width: 1300px)": {
     marginBottom: "$16",
+  },
+
+  "@media (max-width: 768px)": {
+    padding: "0",
   },
 });
 

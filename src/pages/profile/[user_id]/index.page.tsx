@@ -61,6 +61,8 @@ interface ProfileProps {
   };
 
   ratings: (Rating & {
+    alreadyRead: boolean;
+    user: UserPrisma;
     manga: Manga & {
       categories: (CategoriesOnMangas & {
         category: Category;

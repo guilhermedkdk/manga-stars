@@ -23,6 +23,10 @@ export const Container = styled("div", {
   "&:hover": {
     border: "2px solid $gray600",
   },
+
+  "@media (max-width: 1300px)": {
+    height: "100%",
+  },
 });
 
 export const CardHeader = styled("div", {
@@ -34,6 +38,18 @@ export const CardHeader = styled("div", {
 
   "div:nth-child(3)": {
     marginLeft: "auto",
+  },
+
+  "@media (max-width: 1300px)": {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+
+    margin: "auto",
+
+    "div:nth-child(3)": {
+      margin: "auto",
+    },
   },
 });
 
@@ -72,6 +88,14 @@ export const Infos = styled("div", {
     lineHeight: "$base",
     color: "$gray300",
   },
+
+  "@media (max-width: 1300px)": {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
+    textAlign: "center",
+  },
 });
 
 export const InfosWrapper = styled("div", {
@@ -79,6 +103,14 @@ export const InfosWrapper = styled("div", {
 
   height: "100%",
   gap: "$5",
+
+  "@media (max-width: 1300px)": {
+    display: "flex",
+    flexDirection: "column",
+
+    alignItems: "center",
+    margin: "auto",
+  },
 });
 
 export const ReadNotice = styled("div", {
