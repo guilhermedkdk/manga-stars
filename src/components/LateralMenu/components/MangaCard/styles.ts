@@ -30,6 +30,14 @@ export const MangaContainer = styled("div", {
 
   gap: "$8",
   marginBottom: "$3",
+
+  "@media (max-width: 550px)": {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    alignSelf: "center",
+  },
 });
 
 export const Info = styled("div", {
@@ -66,6 +74,12 @@ export const Footer = styled("footer", {
   gap: "$16",
 
   borderTop: "1px solid $gray600",
+
+  "@media (max-width: 550px)": {
+    flexDirection: "column",
+
+    gap: "$4",
+  },
 });
 
 export const MangaNumber = styled("div", {
