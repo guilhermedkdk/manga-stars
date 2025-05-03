@@ -2,26 +2,12 @@ import { PrismaClient } from "@prisma/client";
 
 import { categories } from "./constants/categories";
 import { mangas } from "./constants/mangas";
-import { ratings } from "./constants/ratings";
-import { users } from "./constants/users";
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.rating.deleteMany();
-  await prisma.user.deleteMany();
   await prisma.categoriesOnMangas.deleteMany();
   await prisma.category.deleteMany();
   await prisma.manga.deleteMany();
-
-  const usersSeed = users.map((user) => {
-    return prisma.user.create({
-      data: {
-        id: user.id,
-        name: user.name,
-        avatar_url: user.avatar_url,
-      },
-    });
-  });
 
   const categoriesSeed = categories.map((category) => {
     return prisma.category.create({
@@ -58,28 +44,7 @@ async function main() {
     });
   });
 
-  const ratingsSeed = ratings.map((rating) => {
-    return prisma.rating.create({
-      data: {
-        id: rating.id,
-        rate: rating.rate,
-        description: rating.description,
-        user: {
-          connect: { id: rating.user_id },
-        },
-        manga: {
-          connect: { id: rating.manga_id },
-        },
-      },
-    });
-  });
-
-  await prisma.$transaction([
-    ...categoriesSeed,
-    ...mangasSeed,
-    ...usersSeed,
-    ...ratingsSeed,
-  ]);
+  await prisma.$transaction([...categoriesSeed, ...mangasSeed]);
 }
 
 main()
