@@ -18,7 +18,7 @@ export default function Document() {
           rel="stylesheet"
         />
 
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" type="image/svg+xml" href="/svgs/favicon.svg" />
 
         <style
           id="stitches"
