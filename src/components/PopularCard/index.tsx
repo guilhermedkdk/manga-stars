@@ -9,7 +9,7 @@ interface CardSizeProps {
   name: string;
   author: string;
   rating: number;
-  onClick?: (e: any) => void;
+  onClick?: (e: unknown) => void;
   alreadyRead: boolean;
 }
 

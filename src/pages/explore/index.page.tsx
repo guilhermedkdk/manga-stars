@@ -2,6 +2,7 @@ import { Category } from "@prisma/client";
 import { GetServerSideProps } from "next";
 import { getServerSession } from "next-auth";
 import { NextSeo } from "next-seo";
+import NProgress from "nprogress";
 import { Binoculars, MagnifyingGlass } from "phosphor-react";
 import React, { useState } from "react";
 
@@ -36,13 +37,18 @@ export default function Explore({ categories, mangas }: ExploreProps) {
   const [categorySelected, setCategorySelected] = useState<string | null>(null);
 
   async function selectCategory(categoryId: string | null) {
-    const query = categoryId ? `?category=${categoryId}` : "";
-    const response = await api.get(`/mangas${query}`);
+    NProgress.start();
+    try {
+      const query = categoryId ? `?category=${categoryId}` : "";
+      const response = await api.get(`/mangas${query}`);
 
-    if (response.data.mangasWithRating) {
-      setMangasList(response.data.mangasWithRating);
+      if (response.data.mangasWithRating) {
+        setMangasList(response.data.mangasWithRating);
+      }
+      setCategorySelected(categoryId);
+    } finally {
+      NProgress.done();
     }
-    setCategorySelected(categoryId);
   }
 
   // Filtragem pelo nome dos mangas/autores no SearchInput

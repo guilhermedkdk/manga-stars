@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextApiRequest, NextApiResponse, NextPageContext } from "next";
 import { Adapter } from "next-auth/adapters";
 
@@ -8,7 +9,11 @@ export function PrismaAdapter(
   res: NextApiResponse | NextPageContext["res"]
 ): Adapter {
   return {
-    async createUser(user) {
+    async createUser(user: {
+      name: string;
+      email: string;
+      avatar_url: string;
+    }) {
       const createdUser = await prisma.user.create({
         data: {
           name: user.name,
@@ -115,7 +120,19 @@ export function PrismaAdapter(
       };
     },
 
-    async linkAccount(account) {
+    async linkAccount(account: {
+      userId: string;
+      type: string;
+      provider: string;
+      providerAccountId: string;
+      refresh_token: string;
+      access_token: string;
+      expires_at: number;
+      token_type: string;
+      scope: string;
+      id_token: string;
+      session_state: string;
+    }) {
       await prisma.account.create({
         data: {
           user_id: account.userId,

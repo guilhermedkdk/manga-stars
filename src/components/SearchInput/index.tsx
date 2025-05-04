@@ -7,7 +7,7 @@ export interface SearchInputProps {
   size?: "sm" | "md";
   placeholder?: string;
   value?: string;
-  onChange: (e: any) => void;
+  onChange: (e: unknown) => void;
 }
 
 export const SearchInput = ({ children, size, ...rest }: SearchInputProps) => {

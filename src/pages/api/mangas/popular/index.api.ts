@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 // Retorna os 4 Mangás mais Populares (com mais avaliações)
 // /api/mangas/popular
 
