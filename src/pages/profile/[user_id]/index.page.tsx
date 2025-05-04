@@ -117,7 +117,9 @@ export default function Profile({ infos, ratings, user }: ProfileProps) {
               placeholder="Buscar mangá ou autor"
               size="md"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e: unknown) =>
+                setSearch((e as { target: { value: string } }).target.value)
+              }
             >
               <MagnifyingGlass size={20} />
             </SearchInput>

@@ -94,7 +94,9 @@ export default function Explore({ categories, mangas }: ExploreProps) {
           <SearchInput
             placeholder="Buscar mangá ou autor"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e: unknown) =>
+              setSearch((e as { target: { value: string } }).target.value)
+            }
           >
             <MagnifyingGlass size={20} />
           </SearchInput>
