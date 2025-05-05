@@ -9,7 +9,7 @@
 <a href="#-instalação">📦 Instalação</a>
 
 <p align="center">
-<img alt="" src="./github/thumbnail-mangastars.png" width="100%">
+<img alt="" src="./.github/thumbnail-mangastars.png" width="100%">
 </p>
 
 ## 💻 Projeto
